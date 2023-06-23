@@ -1,0 +1,91 @@
+import 'package:auto_route/annotations.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';
+import 'package:{{project_name.snakeCase()}}/features/counter/view/widgets/theme_segmented_btn.dart';
+import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
+import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
+import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
+
+@RoutePage(
+  deferredLoading: true,
+)
+class CounterPage extends StatelessWidget {
+  const CounterPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CounterView();
+  }
+}
+
+class CounterView extends StatelessWidget {
+  const CounterView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const CounterAppBarTitle(),
+        actions: const [
+          AppLocalePopUp(),
+        ],
+      ),
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CounterText(),
+            ThemeSegmentedBtn(),
+          ],
+        ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Consumer(
+            builder: (context, ref, child) {
+              return FloatingActionButton(
+                onPressed: () => ref.read(counterPod.notifier).increment(),
+                child: const Icon(Icons.add),
+              );
+            },
+          ),
+          const SizedBox(height: 8),
+          Consumer(
+            builder: (context, ref, child) {
+              return FloatingActionButton(
+                onPressed: () => ref.read(counterPod.notifier).decrement(),
+                child: const Icon(Icons.remove),
+              );
+            },
+          ),
+        ],
+      ),
+    ).noInternetWidget();
+  }
+}
+
+class CounterAppBarTitle extends StatelessWidget {
+  const CounterAppBarTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Text(l10n.counterAppBarTitle);
+  }
+}
+
+class CounterText extends ConsumerWidget {
+  const CounterText({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final count = ref.watch(counterPod);
+    return Text('$count', style: theme.textTheme.displayLarge);
+  }
+}
