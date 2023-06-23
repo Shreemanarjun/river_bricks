@@ -19,12 +19,13 @@ dart pub global activate mason_cli
  mason add -g riverpod_simple_architecture --git-url https://github.com/Shreemanarjun/river_bricks --git-path bricks/riverpod_simple_architecture
 
 ```
-### Make using 
+### Make using (with prompt)
 
 ```sh
 mason make riverpod_simple_architecture
 
 ```
+## OR (without prompt as an argument)
 
 ```sh
 mason make riverpod_simple_architecture --project_name "Your Project Name"
