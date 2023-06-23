@@ -21,7 +21,12 @@ final talker = TalkerFlutter.init(
   ),
 );
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(
+  FutureOr<Widget> Function() builder, {
+  List<Override> overrides = const [],
+  List<ProviderObserver>? observers,
+  ProviderContainer? parent,
+}) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -36,12 +41,15 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     ProviderScope(
       overrides: [
         appStorageProvider.overrideWithValue(appStorage),
+        ...overrides,
       ],
       observers: [
         MyObserverLogger(
           talker: talker,
         ),
+        ...observers ?? [],
       ],
+      parent: parent,
       child: await builder(),
     ),
   );
