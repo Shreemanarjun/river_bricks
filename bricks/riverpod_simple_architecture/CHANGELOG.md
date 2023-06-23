@@ -1,3 +1,7 @@
+# 0.1.0+7
+- fix runInShell
+- removed hooks
+
 # 0.1.0+6
 - fix runInShell
 
