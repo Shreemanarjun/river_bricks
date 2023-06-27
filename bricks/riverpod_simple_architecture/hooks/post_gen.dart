@@ -8,7 +8,11 @@ void run(HookContext context) async {
 
   try {
     // Run `flutter packages get` after generation.
-    await Process.run('flutter', ['packages', 'get']);
+    await Process.run(
+      'flutter',
+      ['packages', 'get'],
+      workingDirectory: Directory.current.absolute.toString(),
+    );
     packageprogress.complete();
   } catch (e) {
     packageprogress.cancel();
@@ -20,13 +24,11 @@ void run(HookContext context) async {
 
   try {
     // Run `flutter packages get` after generation.
-    await Process.run('flutter', [
-      'pub',
-      'run',
-      'build_runner',
-      'build',
-      '--delete-conflicting-outputs'
-    ]);
+    await Process.run(
+      'flutter',
+      ['pub', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'],
+      workingDirectory: Directory.current.absolute.toString(),
+    );
     codegenprogress.complete();
   } catch (e) {
     codegenprogress.cancel();
