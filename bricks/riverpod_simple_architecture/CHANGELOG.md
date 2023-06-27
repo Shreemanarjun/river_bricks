@@ -1,3 +1,6 @@
+# 0.1.0+18
+- 📝 update on completion msg
+
 # 0.1.0+17
 - 🚑 fix analysis issue
 - 📝 update on docs
