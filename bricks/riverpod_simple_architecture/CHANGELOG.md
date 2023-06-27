@@ -1,3 +1,6 @@
+# 0.1.0+16
+- ✨ fix postgen directory path
+
 # 0.1.0+15
 - ✨ fix postgen directory path
 
