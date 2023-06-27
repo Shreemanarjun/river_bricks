@@ -1,3 +1,7 @@
+# 0.1.0+17
+- 🚑 fix analysis issue
+- 📝 update on docs
+
 # 0.1.0+16
 - ✨ fix postgen directory path
 
