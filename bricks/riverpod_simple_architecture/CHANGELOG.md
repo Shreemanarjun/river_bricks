@@ -1,3 +1,6 @@
+# 0.1.0+14
+- ✨ fix postgen directory path
+
 # 0.1.0+13
 - ✨ Add postgen hooks
 
