@@ -11,7 +11,7 @@ void run(HookContext context) async {
     await Process.run(
       'flutter',
       ['packages', 'get'],
-      workingDirectory: Directory.current.absolute.toString(),
+      runInShell: true,
     );
     packageprogress.complete();
   } catch (e) {
@@ -27,7 +27,7 @@ void run(HookContext context) async {
     await Process.run(
       'flutter',
       ['pub', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'],
-      workingDirectory: Directory.current.absolute.toString(),
+      workingDirectory: Directory.current.absolute.path.toString(),
     );
     codegenprogress.complete();
   } catch (e) {
