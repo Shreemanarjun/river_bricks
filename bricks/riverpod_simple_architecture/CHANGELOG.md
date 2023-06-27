@@ -1,5 +1,8 @@
+# 0.1.0+10
+- 🚑 theme selection in ui
+
 # 0.1.0+9
-- bootstraping method update to support provider scop
+- bootstraping method update to support provider scope
 
 # 0.1.0+8
 - 🌐 localization l10n.yaml file added
