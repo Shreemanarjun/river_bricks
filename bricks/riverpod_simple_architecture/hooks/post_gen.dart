@@ -51,16 +51,15 @@ void run(HookContext context) async {
   }
   context.logger.info('Post generation completed');
   context.logger.info(
-      """🎉 Congratulations on generating your code using the provided template! 
-      \n🚀 You've built an impressive library with powerful features.
+      """\n\n 🎉 Congratulations on generating your code using the provided template! 
+      \n 🚀 You've built an impressive library with powerful features.
       \n 💪 Utilize Riverpod for efficient state management,
       \n Auto Route for seamless navigation, and Dio for API requests.
       \n 🌐📥 With velocity_x, create stunning UIs, while flex_color_scheme provides theming and persistence.
       \n 🎨💾 Flash enables engaging alerting UIs, and Hive with storage provider facilitates efficient database usage.
-      \n🗄️💡 Localize and internationalize your app using l18n.
+      \n 🗄️💡 Localize and internationalize your app using l18n.
       \n 🌍🌐 Handle scenarios like no internet connection and app locale selection with internet_connection_checker's default UIs.
       \n 🌐🚫 Ensure responsiveness across devices with responsive_framework.\n 📱💻 And use talker_flutter for logging and debugging.
-      \n 🗣️🐛 Keep up the great work! Happy coding! 
-      \n💻✨
+      \n 🗣️🐛 Keep up the great work! Happy coding! 💻✨
       \n\n Love Flutter from Shreeman Arjun! do visit https://github.com/Shreemanarjun ❤️🔥""");
 }
