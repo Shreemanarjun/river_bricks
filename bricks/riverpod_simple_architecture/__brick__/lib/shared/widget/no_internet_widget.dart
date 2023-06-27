@@ -10,18 +10,22 @@ import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.da
 import 'package:velocity_x/velocity_x.dart';
 
 extension NoInternet on Widget {
-  Widget noInternetWidget() {
-    return InternetCheckerWidget(child: this);
+  Widget noInternetWidget({bool maintainState = true}) {
+    return InternetCheckerWidget(
+      child: this,
+      maintainState: maintainState,
+    );
   }
 }
 
 class InternetCheckerWidget extends ConsumerStatefulWidget {
   const InternetCheckerWidget({
     required this.child,
+    required this.maintainState,
     super.key,
   });
   final Widget child;
-
+  final bool maintainState;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _NoInternetWidgetState();
@@ -127,15 +131,33 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
       body: !kIsWeb
           ? statusAsync.when(
               data: (status) {
-                switch (status) {
-                  case InternetConnectionStatus.connected:
-                    return widget.child;
-                  case InternetConnectionStatus.disconnected:
-                    return Scaffold(
-                      body: <Widget>[
-                        ///TODO: PUT Your no internet widget is here.
-                      ].stack(clip: Clip.none),
-                    );
+                if (widget.maintainState) {
+                  return Stack(
+                    children: [
+                      Visibility(
+                        visible: status == InternetConnectionStatus.connected,
+                        maintainState: true,
+                        child: widget.child,
+                      ),
+                      if (status == InternetConnectionStatus.disconnected)
+                        Scaffold(
+                          body: <Widget>[
+                            ///TODO: PUT Your no internet widget is here.
+                          ].vStack(alignment: MainAxisAlignment.center),
+                        ),
+                    ],
+                  );
+                } else {
+                  switch (status) {
+                    case InternetConnectionStatus.connected:
+                      return widget.child;
+                    case InternetConnectionStatus.disconnected:
+                      return Scaffold(
+                        body: <Widget>[
+                          ///TODO: PUT Your no internet widget is here.
+                        ].stack(clip: Clip.none),
+                      );
+                  }
                 }
               },
               error: (error, stackTrace) => Center(
