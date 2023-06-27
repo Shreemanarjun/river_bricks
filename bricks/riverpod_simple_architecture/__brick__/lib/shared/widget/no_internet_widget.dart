@@ -12,8 +12,8 @@ import 'package:velocity_x/velocity_x.dart';
 extension NoInternet on Widget {
   Widget noInternetWidget({bool maintainState = true}) {
     return InternetCheckerWidget(
-      child: this,
       maintainState: maintainState,
+      child: this,
     );
   }
 }
