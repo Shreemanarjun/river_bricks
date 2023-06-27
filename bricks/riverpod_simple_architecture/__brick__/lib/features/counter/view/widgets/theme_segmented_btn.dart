@@ -14,6 +14,12 @@ class _ThemeSegmentedBtnState extends ConsumerState<ThemeSegmentedBtn> {
     ThemeMode.system,
   };
   @override
+  void initState() {
+    super.initState();
+    selection = {ref.read(themecontrollerProvider)};
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SegmentedButton(
       segments: const <ButtonSegment<ThemeMode>>[
