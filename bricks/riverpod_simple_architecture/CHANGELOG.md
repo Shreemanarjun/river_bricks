@@ -1,3 +1,6 @@
+# 0.1.0+12
+- 🚑 fix docs
+
 # 0.1.0+11
 - 🚑 fix state restoration on internet disconnection 
 
