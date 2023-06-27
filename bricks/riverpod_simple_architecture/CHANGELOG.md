@@ -1,3 +1,6 @@
+# 0.1.0+11
+- 🚑 fix state restoration on internet disconnection 
+
 # 0.1.0+10
 - 🚑 theme selection in ui
 
