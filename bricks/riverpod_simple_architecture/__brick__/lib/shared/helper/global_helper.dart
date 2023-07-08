@@ -1,10 +1,12 @@
-import 'dart:async';
+// coverage:ignore-file
 
+import 'dart:async';
 import 'package:flash/flash.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:{{project_name.snakeCase()}}/shared/widget/circular_timer.dart';
 
+///This mixin used for showing dialogs,overlay,bootomsheet,snackbars which automatically disposed
+///when the stateful class use this class disposes.s
 mixin GlobalHelper<T extends StatefulWidget> on State<T> {
   OverlayEntry? _overlayEntry;
   AnimationController? _animationController;
@@ -173,7 +175,7 @@ mixin GlobalHelper<T extends StatefulWidget> on State<T> {
             clipBehavior: Clip.antiAlias,
             indicatorColor: Colors.amber,
             title: title,
-            icon: icon ?? const CircularTimer(),
+            icon: icon,
             content: content,
           ),
         );

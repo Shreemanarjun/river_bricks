@@ -11,6 +11,10 @@ import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/helper/global_helper.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
 
+///This class holds Material App or Cupertino App
+///with routing,theming and locale setup .
+///Also responsive framerwork used for responsive application
+///which auto resize or autoscale the app.
 class App extends ConsumerStatefulWidget {
   const App({super.key});
 

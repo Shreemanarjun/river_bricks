@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/theme_pod.dart';
+import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 
+///This provider stores the ThemeModeController
 final themecontrollerProvider =
     NotifierProvider.autoDispose<ThemeModeController, ThemeMode>(
   ThemeModeController.new,
   name: 'themecontrollerProvider',
 );
 
+///This controller class used change theme and
+///get the intial theme from storage if its available
 class ThemeModeController extends AutoDisposeNotifier<ThemeMode> {
-  ThemeModeController() : super();
-
-  Future<void> changeTheme(ThemeMode theme) async {
-    state = theme;
-    final themeService = ref.watch(themeServicePod);
-    await themeService.setTheme(themeMode: state);
-  }
+  final _themeKey = "theme";
 
   @override
   ThemeMode build() {
-    loadTheme();
+    final theme = ref.watch(appStorageProvider).get(key: _themeKey);
+    if (theme != null) {
+      if (theme == ThemeMode.light.name) {
+        return ThemeMode.light;
+      } else if (theme == ThemeMode.dark.name) {
+        return ThemeMode.dark;
+      }
+      return ThemeMode.system;
+    }
     return ThemeMode.system;
   }
 
-  Future<void> loadTheme() async {
-    final themeService = ref.watch(themeServicePod);
-    state = await themeService.getTheme();
+  Future<void> changeTheme(ThemeMode theme) async {
+    state = theme;
+    await ref.read(appStorageProvider).put(key: _themeKey, value: theme.name);
   }
 }

@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 
+// coverage:ignore-file
+///This error handler used in interceptor for resolving response for specific
+///dio exception type to generalize the mesages whic can easy to understand for the end user.
 Future<void> defaultAPIErrorHandler(
   DioException err,
   ErrorInterceptorHandler handler,

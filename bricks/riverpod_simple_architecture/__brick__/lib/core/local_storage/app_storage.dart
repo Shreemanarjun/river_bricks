@@ -1,32 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+/// This class used for storing data in nosql hive boxes
+/// ,reading data and deleting data .
 class AppStorage {
-  // ignore: unused_field
-  Box? _box;
+  Box? appBox;
 
-  /// for initialling app local storage
-  Future<void> initAppStorage() async {
-    await Hive.initFlutter();
-    _box = await Hive.openBox('hello world');
+  AppStorage(this.appBox);
+
+  Future<void> init({isTest = false}) async {
+    appBox = appBox ??
+        await Hive.openBox(
+          'appBox',
+          bytes: isTest ? Uint8List(0) : null,
+        );
   }
 
-  // example of storing & getting value
+  /// for getting value as String for a
+  /// given key from the box
+  String? get({required String key}) {
+    return appBox?.get(key) as String?;
+  }
 
-  /// for storing uploaded string value
-  // final String _helloWorld = 'helloWorld';
-
-  // /// for getting string from box
-  // String? getHelloWorld() {
-  //   return _box?.get(_helloWorld) as String?;
-  // }
-
-  // /// for storing helloWorld to app
-  // Future<void> putHelloWorld(String helloWorld) async {
-  //   await _box?.put(_helloWorld, helloWorld);
-  // }
+  /// for storing value on defined key 
+  /// on the box
+  Future<void> put({
+    required String key,
+    required String value,
+  }) async {
+    await appBox?.put(key, value);
+  }
 
   /// for clearing all data in box
   Future<void> clearAllData() async {
-    await _box?.clear();
+    await appBox?.clear();
   }
 }

@@ -4,6 +4,7 @@ import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+///This widget can be used to change the local in a popup
 class AppLocalePopUp extends ConsumerWidget {
   const AppLocalePopUp({super.key});
 
@@ -14,28 +15,58 @@ class AppLocalePopUp extends ConsumerWidget {
         icon: const Icon(Icons.translate),
         // Callback that sets the selected popup menu item.
         onSelected: (locale) {
-          ref
-              .read(localePod.notifier)
-              .changeLocale(context: context, locale: locale);
+          ref.read(localePod.notifier).changeLocale(locale: locale);
         },
         itemBuilder: (BuildContext context) =>
             AppLocalizations.supportedLocales.map(
               (e) {
-                final l10n = context.l10n;
+                final currentLocale = ref.watch(localePod);
                 return PopupMenuItem<Locale>(
                   value: e,
-                  child: l10n.localeName == e.toLanguageTag()
-                      ? <Widget>[
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                          ),
-                          getLanguageName(e).text.bold.isIntrinsic.make(),
-                        ].hStack()
-                      : getLanguageName(e).text.isIntrinsic.make(),
+                  child: e == currentLocale
+                      ? SelectedLocaleItem(
+                          locale: e,
+                          key: ValueKey('selected ${e.languageCode}'),
+                        )
+                      : UnselectedLocaleItem(
+                          locale: e,
+                          key: ValueKey('unselected ${e.languageCode}'),
+                        ),
                 );
               },
             ).toList());
+  }
+}
+
+class SelectedLocaleItem extends StatelessWidget {
+  const SelectedLocaleItem({
+    Key? key,
+    required this.locale,
+  }) : super(key: key);
+  final Locale locale;
+
+  @override
+  Widget build(BuildContext context) {
+    return <Widget>[
+      const Icon(
+        Icons.check,
+        color: Colors.green,
+      ),
+      getLanguageName(locale).text.bold.isIntrinsic.make(),
+    ].hStack();
+  }
+}
+
+class UnselectedLocaleItem extends StatelessWidget {
+  const UnselectedLocaleItem({
+    Key? key,
+    required this.locale,
+  }) : super(key: key);
+  final Locale locale;
+
+  @override
+  Widget build(BuildContext context) {
+    return getLanguageName(locale).text.bold.isIntrinsic.make();
   }
 }
 

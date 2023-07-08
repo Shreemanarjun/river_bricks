@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+// coverage:ignore-file
 class MyObserverLogger<T> extends ProviderObserver {
   MyObserverLogger({required this.talker}) : super();
   final Talker talker;

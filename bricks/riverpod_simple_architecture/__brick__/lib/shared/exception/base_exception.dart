@@ -2,11 +2,14 @@
 
 import 'dart:convert';
 
+///This is the base class exception which can be
+///used to throw with a message
 class BaseException implements Exception {
   BaseException({this.message = 'Unknown Error'});
   final String message;
 }
 
+///This class used to throw error from API Providers
 class APIException implements BaseException {
   final int? statusCode;
   final String? statusMessage;

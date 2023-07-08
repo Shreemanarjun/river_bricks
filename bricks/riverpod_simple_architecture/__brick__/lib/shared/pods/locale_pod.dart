@@ -1,33 +1,44 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hydrated_state_notifier/hydrated_state_notifier.dart';
-import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
+
+import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
+import 'package:{{project_name.snakeCase()}}/shared/exception/base_exception.dart';
 
-class LocaleNotifier extends HydratedStateNotifier<Locale> {
-  LocaleNotifier() : super(const Locale.fromSubtags(languageCode: 'en'));
+///This Notifier class used to get current locale and change local in DB
+class LocaleNotifier extends AutoDisposeNotifier<Locale> {
+  final _localeBoxKey = 'locale';
 
-  void changeLocale({required BuildContext context, required Locale locale}) {
-    final isSupported = AppLocalizations.supportedLocales.contains(locale);
-    if (isSupported) {
-      state = locale;
+  @override
+  Locale build() {
+    final locale = ref.watch(appStorageProvider).get(key: _localeBoxKey);
+
+    if (locale != null) {
+      return AppLocalizations.supportedLocales
+          .where((element) => element.languageCode == locale)
+          .map((e) => Locale(e.languageCode))
+          .first;
     } else {
-      talker.debug('language not supported');
+      return AppLocalizations.supportedLocales.first;
     }
   }
 
-  @override
-  Locale? fromJson(Map<String, dynamic> json) {
-    return Locale.fromSubtags(languageCode: json['defaultLocale'] as String);
+  Future<void> changeLocale({required Locale locale}) async {
+    final isSupported = AppLocalizations.supportedLocales.contains(locale);
+    if (isSupported) {
+      state = locale;
+      await ref.read(appStorageProvider).put(
+            key: _localeBoxKey,
+            value: locale.languageCode,
+          );
+    } else {
+      throw BaseException(message: 'Language not supported');
+    }
   }
-
-  @override
-  Map<String, dynamic>? toJson(Locale state) => {
-        'defaultLocale': state.languageCode,
-      };
 }
 
-final localePod = StateNotifierProvider.autoDispose<LocaleNotifier, Locale>(
-  (ref) => LocaleNotifier(),
+final localePod = NotifierProvider.autoDispose<LocaleNotifier, Locale>(
+  LocaleNotifier.new,
+  name: 'localePod',
 );

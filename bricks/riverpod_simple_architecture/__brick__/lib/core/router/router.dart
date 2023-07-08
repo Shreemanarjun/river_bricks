@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:{{project_name.snakeCase()}}/core/router/router.gr.dart';
 
+/// This class used for defined routes and paths na dother properties
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
   @override

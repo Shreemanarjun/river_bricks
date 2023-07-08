@@ -1,9 +1,10 @@
 // ignore_for_file: strict_raw_type
-
+// coverage:ignore-file
 import 'package:dio/dio.dart';
 import 'package:duration/duration.dart';
 import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 
+///This Interceptor is used check the response time from the server for each request
 class TimeResponseInterceptor extends Interceptor {
   late Stopwatch stopwatch;
 

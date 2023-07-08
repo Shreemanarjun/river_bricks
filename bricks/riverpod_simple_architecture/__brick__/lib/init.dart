@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:platform_info/platform_info.dart';
 
+///This function is used for setting up default orientation,
+///display refresh rate, hide keyboard etc system services.
 Future<void> init() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

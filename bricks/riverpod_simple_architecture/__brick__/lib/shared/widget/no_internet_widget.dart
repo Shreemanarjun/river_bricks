@@ -1,31 +1,45 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/dio_client_provider.dart';
 import 'package:{{project_name.snakeCase()}}/shared/helper/global_helper.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 
-import 'package:velocity_x/velocity_x.dart';
-
+///No internet extension widget
 extension NoInternet on Widget {
-  Widget noInternetWidget({bool maintainState = true}) {
+  Widget noInternetWidget({
+    bool maintainState = true,
+    bool enableCheck = true,
+    Widget? noInternetWidget,
+  }) {
     return InternetCheckerWidget(
+      ///Maintain state is by default true
+      ///which will maintain by default the state of your app
+      ///Whether to maintain the [State] objects of the [child] subtree when it is not [visible].
       maintainState: maintainState,
+      noInternetWidget: noInternetWidget,
+
+      ///Whether the enable checking no internet widget
+      enableCheck: enableCheck,
       child: this,
     );
   }
 }
 
+///This class handles internet status and according to that handles ui
 class InternetCheckerWidget extends ConsumerStatefulWidget {
   const InternetCheckerWidget({
     required this.child,
     required this.maintainState,
+    this.noInternetWidget,
+    required this.enableCheck,
     super.key,
   });
   final Widget child;
   final bool maintainState;
+  final Widget? noInternetWidget;
+  final bool enableCheck;
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _NoInternetWidgetState();
@@ -34,14 +48,14 @@ class InternetCheckerWidget extends ConsumerStatefulWidget {
 class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
     with GlobalHelper {
   InternetConnectionStatus? lastResult;
-
+  @visibleForTesting
   void internetListener(
     InternetConnectionStatus status, {
     required void Function() onNoInternetOKPressed,
   }) {
     switch (status) {
       case InternetConnectionStatus.connected:
-        talker.debug('Data Reconnected.');
+        //  talker.debug('Data Reconnected.');
         if (lastResult == InternetConnectionStatus.disconnected) {
           ref.invalidate(dioProvider);
           ScaffoldMessenger.of(context)
@@ -64,19 +78,21 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
                 ],
               ),
             );
-          Future.delayed(
-            const Duration(seconds: 2),
-            () {
-              ScaffoldMessenger.of(context).clearMaterialBanners();
-            },
-          );
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            Future.delayed(
+              const Duration(seconds: 2),
+              () {
+                ScaffoldMessenger.of(context).clearMaterialBanners();
+              },
+            );
+          });
         } else {
-          talker.debug('First time');
+          //talker.debug('First time');
         }
 
         break;
       case InternetConnectionStatus.disconnected:
-        talker.debug('You are disconnected from the internet.');
+        // talker.debug('You are disconnected from the internet.');
         ScaffoldMessenger.of(context)
           ..clearMaterialBanners()
           ..showMaterialBanner(
@@ -113,12 +129,8 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
           internetListener(
             status,
             onNoInternetOKPressed: () {
+              ScaffoldMessenger.of(context).clearMaterialBanners();
               ref.invalidate(internetCheckerPod);
-              statusAsync.whenData((status) {
-                if (status == InternetConnectionStatus.connected) {
-                  ScaffoldMessenger.of(context).clearMaterialBanners();
-                }
-              });
             },
           );
         }
@@ -128,7 +140,7 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      body: !kIsWeb
+      body: widget.enableCheck
           ? statusAsync.when(
               data: (status) {
                 if (widget.maintainState) {
@@ -141,9 +153,7 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
                       ),
                       if (status == InternetConnectionStatus.disconnected)
                         Scaffold(
-                          body: <Widget>[
-                            ///TODO: PUT Your no internet widget is here.
-                          ].vStack(alignment: MainAxisAlignment.center),
+                          body: widget.noInternetWidget,
                         ),
                     ],
                   );
@@ -153,9 +163,7 @@ class _NoInternetWidgetState extends ConsumerState<InternetCheckerWidget>
                       return widget.child;
                     case InternetConnectionStatus.disconnected:
                       return Scaffold(
-                        body: <Widget>[
-                          ///TODO: PUT Your no internet widget is here.
-                        ].stack(clip: Clip.none),
+                        body: widget.noInternetWidget,
                       );
                   }
                 }

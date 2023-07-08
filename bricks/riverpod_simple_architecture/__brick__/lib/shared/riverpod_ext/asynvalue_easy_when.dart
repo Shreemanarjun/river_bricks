@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+/// This one is extension `when` extension on AsyncValue
+/// with some default loading,error widget and
+///  also which also supports custom loading and error widget
 extension AsyncDisplay<T> on AsyncValue<T> {
   Widget easyWhen({
     required Widget Function(T data) data,
@@ -44,6 +47,7 @@ extension AsyncDisplay<T> on AsyncValue<T> {
       );
 }
 
+/// This class give defaut loading widget
 class DefaultLoadingWidget extends StatelessWidget {
   const DefaultLoadingWidget({
     required this.isLinear,
@@ -61,6 +65,7 @@ class DefaultLoadingWidget extends StatelessWidget {
   }
 }
 
+/// This widget supports error messages automatically
 class DefaultErrorWidget extends StatelessWidget {
   const DefaultErrorWidget({
     required this.error,
@@ -128,6 +133,7 @@ class DefaultErrorWidget extends StatelessWidget {
   }
 }
 
+///This widgets classes default error messages
 class ErrorTextWidget extends StatelessWidget {
   const ErrorTextWidget({
     required this.error,
@@ -148,6 +154,7 @@ class ErrorTextWidget extends StatelessWidget {
   }
 }
 
+///This class used to show error message according to DioException type
 class DefaultDioErrorWidget extends StatelessWidget {
   const DefaultDioErrorWidget({
     required this.dioError,

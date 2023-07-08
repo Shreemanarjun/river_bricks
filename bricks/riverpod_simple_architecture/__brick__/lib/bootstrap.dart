@@ -1,26 +1,34 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:platform_info/platform_info.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
+import 'package:{{project_name.snakeCase()}}/init.dart';
 import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:hydrated_state_notifier/hydrated_state_notifier.dart';
-import 'package:hydrated_state_notifier_hive/hydrated_state_notifier_hive.dart';
 
+// coverage:ignore-file
+
+/// This `talker` global variable used for logging and accessible
+///  to other classed or function
 final talker = TalkerFlutter.init(
   settings: TalkerSettings(
     maxHistoryItems: null,
   ),
   logger: TalkerLogger(
     output: debugPrint,
+    settings: TalkerLoggerSettings(
+      enableColors: !Platform.I.isIOS,
+    ),
   ),
 );
 
+///This bootstrap function builds widget asynchronusly
+///where builder function used for building your start widget.
+///You can override riverpod providers ,also setup observers
+///or you can put a provider container in parent
 Future<void> bootstrap(
   FutureOr<Widget> Function() builder, {
   List<Override> overrides = const [],
@@ -31,23 +39,21 @@ Future<void> bootstrap(
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
   WidgetsFlutterBinding.ensureInitialized();
-  // Add cross-flavor configuration here
-  final appStorage = AppStorage();
-  await appStorage.initAppStorage();
-  HydratedStorage.storage = await HiveHydratedStorage.build(
-    storageDirectoryPath: kIsWeb ? '' : (await getTemporaryDirectory()).path,
-  );
+  unawaited(init());
+  await Hive.initFlutter();
+  final appBox = await Hive.openBox('appBox');
+
   runApp(
     ProviderScope(
       overrides: [
-        appStorageProvider.overrideWithValue(appStorage),
+        appBoxProvider.overrideWithValue(appBox),
         ...overrides,
       ],
       observers: [
         MyObserverLogger(
           talker: talker,
         ),
-        ...observers ?? [],
+        ...?observers,
       ],
       parent: parent,
       child: await builder(),

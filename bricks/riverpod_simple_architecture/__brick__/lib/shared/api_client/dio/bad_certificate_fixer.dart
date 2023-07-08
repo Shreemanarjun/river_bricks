@@ -1,9 +1,12 @@
-import 'dart:io';
+// coverage:ignore-file
 
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 
+///This function used for those devices which doesnot support
+/// newer ssl certificate and disabled in web
 void fixBadCertificate({required Dio dio}) {
   if (!kIsWeb) {
     dio.httpClientAdapter = IOHttpClientAdapter(

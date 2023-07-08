@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/view/widgets/theme_segmented_btn.dart';
+import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/theme_segmented_btn.dart';
 import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
