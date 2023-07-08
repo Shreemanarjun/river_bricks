@@ -15,7 +15,6 @@ class FormDataInterceptor extends Interceptor {
         talker.log('${item.key} : ${item.value}');
       }
     }
-    handler.next(options);
     super.onRequest(options, handler);
   }
 }
