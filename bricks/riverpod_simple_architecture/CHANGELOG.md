@@ -1,3 +1,9 @@
+# 1.0.0+4
+- Fix test files
+
+# 1.0.0+3
+- Replace main.dart
+
 # 1.0.0+2
 - Fix Errors
 
