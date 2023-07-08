@@ -1,3 +1,6 @@
+# 1.0.0+2
+- Fix Errors
+
 # 1.0.0+1
 - Make widgets testable
 - Added test coverage
