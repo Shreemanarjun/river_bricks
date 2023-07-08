@@ -1,3 +1,6 @@
+# 1.0.0+6
+- Fix interceptor (form data)
+
 # 1.0.0+5
 - Fix test files
 
