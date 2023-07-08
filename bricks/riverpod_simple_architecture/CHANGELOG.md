@@ -1,6 +1,8 @@
 # 1.0.0+1
 - Make widgets testable
 - Added test coverage
+- Removed some dependency
+- Added test tree
 
 # 0.1.0+20
 - 📝 update on completion msg

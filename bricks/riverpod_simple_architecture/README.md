@@ -115,6 +115,7 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┣ 📂router
  ┃ ┃ ┣ 📜auto_route_observer.dart
  ┃ ┃ ┣ 📜router.dart
+ ┃ ┃ ┣ 📜router.gr.dart
  ┃ ┃ ┗ 📜router_pod.dart
  ┃ ┗ 📂theme
  ┃ ┃ ┣ 📜app_theme.dart
@@ -125,7 +126,7 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┃ ┣ 📜i_theme_service.dart
  ┃ ┃ ┃ ┗ 📜theme_service.dart
  ┣ 📂features
- ┃ ┗ 📂counter
+ ┃ ┣ 📂counter
  ┃ ┃ ┣ 📂controller
  ┃ ┃ ┃ ┣ 📂notifier
  ┃ ┃ ┃ ┃ ┗ 📜counter_notifier.dart
@@ -135,6 +136,11 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┃ ┃ ┗ 📜theme_segmented_btn.dart
  ┃ ┃ ┃ ┗ 📜counter_page.dart
  ┃ ┃ ┗ 📜counter.dart
+ ┃ ┗ 📂theme_segmented_btn
+ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┗ 📜selection_theme_pod.dart
+ ┃ ┃ ┗ 📂view
+ ┃ ┃ ┃ ┗ 📜theme_segmented_btn.dart
  ┣ 📂l10n
  ┃ ┣ 📂arb
  ┃ ┃ ┣ 📜app_en.arb
@@ -147,7 +153,8 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┃ ┣ 📜default_api_error_handler.dart
  ┃ ┃ ┃ ┣ 📜default_api_interceptor.dart
  ┃ ┃ ┃ ┣ 📜default_time_response_interceptor.dart
- ┃ ┃ ┃ ┗ 📜dio_client_provider.dart
+ ┃ ┃ ┃ ┣ 📜dio_client_provider.dart
+ ┃ ┃ ┃ ┗ 📜form_data_interceptor.dart
  ┃ ┣ 📂exception
  ┃ ┃ ┗ 📜base_exception.dart
  ┃ ┣ 📂helper
@@ -172,6 +179,50 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┣ 📜main_development.dart
  ┣ 📜main_production.dart
  ┗ 📜main_staging.dart
+
+
+ 📦test
+ ┣ 📂app
+ ┃ ┗ 📂view
+ ┃ ┃ ┗ 📜app_test.dart
+ ┣ 📂core
+ ┃ ┣ 📂storage
+ ┃ ┃ ┗ 📜app_storage_test.dart
+ ┃ ┗ 📂theme
+ ┃ ┃ ┗ 📜theme_controller_pod_test.dart
+ ┣ 📂counter
+ ┃ ┣ 📂pod
+ ┃ ┃ ┗ 📜counter_pod_test.dart
+ ┃ ┗ 📂view
+ ┃ ┃ ┗ 📜counter_page_test.dart
+ ┣ 📂features
+ ┃ ┣ 📂counter
+ ┃ ┃ ┣ 📂pod
+ ┃ ┃ ┃ ┗ 📜counter_pod_test.dart
+ ┃ ┃ ┗ 📂view
+ ┃ ┃ ┃ ┗ 📜counter_page_test.dart
+ ┃ ┗ 📂theme_segment_btn
+ ┃ ┃ ┗ 📂view
+ ┃ ┃ ┃ ┗ 📜theme_segment_btn_test.dart
+ ┣ 📂helpers
+ ┃ ┣ 📜helpers.dart
+ ┃ ┗ 📜pump_app.dart
+ ┣ 📂shared
+ ┃ ┣ 📂api_client
+ ┃ ┃ ┗ 📂dio
+ ┃ ┃ ┃ ┗ 📜dio_client_provider_test.dart
+ ┃ ┣ 📂exception
+ ┃ ┃ ┗ 📜exception_test.dart
+ ┃ ┣ 📂pods
+ ┃ ┃ ┣ 📜internet_checker_pod_test.dart
+ ┃ ┃ ┗ 📜locale_pod_test.dart
+ ┃ ┣ 📂riverpod_ext
+ ┃ ┃ ┣ 📜asynvalue_easywhen_test.dart
+ ┃ ┃ ┗ 📜cache_extension_test.dart
+ ┃ ┗ 📂widgets
+ ┃ ┃ ┣ 📜app_locale_popup_test.dart
+ ┃ ┃ ┗ 📜no_interenet_widget_test.dart
+ ┗ 📜init_test.dart
 ```
 
  ## License 🍀
