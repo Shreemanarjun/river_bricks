@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/bad_certificate_fixer.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/default_api_interceptor.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/default_time_response_interceptor.dart';
@@ -19,6 +20,7 @@ final dioProvider = Provider.autoDispose<Dio>(
       dio.interceptors.add(FormDataInterceptor());
       dio.interceptors.add(
         TalkerDioLogger(
+          talker: talker,
           settings: const TalkerDioLoggerSettings(
             printRequestHeaders: true,
             printResponseHeaders: true,
