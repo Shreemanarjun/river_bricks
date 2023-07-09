@@ -1,3 +1,6 @@
+# 1.0.0+7
+- 🐛 changes in talker dio logger
+
 # 1.0.0+6
 - Fix interceptor (form data)
 
