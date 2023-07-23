@@ -1,3 +1,10 @@
+# 1.0.0+8
+- 🐛 add herotag on floating action button
+- ✨ add no internet to Root app
+- ✨ added default main.dart
+- 🐛 disable talker in release mode
+- ✨ added analysis options with custom lint
+
 # 1.0.0+7
 - 🐛 changes in talker dio logger
 

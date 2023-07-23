@@ -13,3 +13,4 @@ pubspec.lock
 # Conventional directory for build outputs
 build/
 
+bricks/riverpod_simple_architecture/CHANGELOG.md
