@@ -6,7 +6,6 @@ import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter
 import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/theme_segmented_btn.dart';
 import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
-import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
 
 @RoutePage(
   deferredLoading: true,
@@ -49,6 +48,7 @@ class CounterView extends StatelessWidget {
           Consumer(
             builder: (context, ref, child) {
               return FloatingActionButton(
+                heroTag: 'add',
                 onPressed: () => ref.read(counterPod.notifier).increment(),
                 child: const Icon(Icons.add),
               );
@@ -58,6 +58,7 @@ class CounterView extends StatelessWidget {
           Consumer(
             builder: (context, ref, child) {
               return FloatingActionButton(
+                heroTag: 'subtract',
                 onPressed: () => ref.read(counterPod.notifier).decrement(),
                 child: const Icon(Icons.remove),
               );
@@ -65,7 +66,7 @@ class CounterView extends StatelessWidget {
           ),
         ],
       ),
-    ).noInternetWidget();
+    );
   }
 }
 
