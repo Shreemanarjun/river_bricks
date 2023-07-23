@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,9 +14,13 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 /// This `talker` global variable used for logging and accessible
 ///  to other classed or function
+// coverage:ignore-file
+
 final talker = TalkerFlutter.init(
   settings: TalkerSettings(
     maxHistoryItems: null,
+    useConsoleLogs: !kReleaseMode,
+    enabled: !kReleaseMode,
   ),
   logger: TalkerLogger(
     output: debugPrint,
