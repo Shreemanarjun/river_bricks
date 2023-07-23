@@ -1,3 +1,6 @@
+# 1.0.0+9
+- remove custom lint
+
 # 1.0.0+8
 - 🐛 add herotag on floating action button
 - ✨ add no internet to Root app
