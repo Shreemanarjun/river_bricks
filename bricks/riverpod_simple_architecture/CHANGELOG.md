@@ -1,3 +1,6 @@
+# 1.0.0+10
+- remove custom lint
+
 # 1.0.0+9
 - remove custom lint
 

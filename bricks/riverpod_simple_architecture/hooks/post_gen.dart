@@ -61,5 +61,6 @@ void run(HookContext context) async {
       \n 🌍🌐 Handle scenarios like no internet connection and app locale selection with internet_connection_checker's default UIs.
       \n 🌐🚫 Ensure responsiveness across devices with responsive_framework.\n 📱💻 And use talker_flutter for logging and debugging.
       \n 🗣️🐛 Keep up the great work! Happy coding! 💻✨
+      \n Please uncomment custom lint option in analysis_options.yaml to enable riverpod lint
       \n\n Love Flutter from Shreeman Arjun! do visit https://github.com/Shreemanarjun ❤️🔥\n\n""");
 }
