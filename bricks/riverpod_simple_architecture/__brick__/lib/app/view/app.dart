@@ -10,6 +10,7 @@ import 'package:{{project_name.snakeCase()}}/core/theme/theme_controller.dart';
 import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/helper/global_helper.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
+import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
 
 ///This class holds Material App or Cupertino App
 ///with routing,theming and locale setup .
@@ -87,7 +88,7 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
         return Toast(
           navigatorKey: navigatorKey,
           child: child,
-        );
+        ).noInternetWidget();
       },
     );
   }
