@@ -1,3 +1,6 @@
+# 1.0.0+11
+- doc improvement
+
 # 1.0.0+10
 - remove custom lint
 
