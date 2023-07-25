@@ -76,6 +76,12 @@ dart pub global activate mason_cli
  mason add -g riverpod_simple_architecture --git-url https://github.com/Shreemanarjun/river_bricks --git-path bricks/riverpod_simple_architecture
 
 ```
+### Upgrade to newer version
+
+```sh
+mason upgrade --global
+
+```
 
 ## Variables ✨
 
