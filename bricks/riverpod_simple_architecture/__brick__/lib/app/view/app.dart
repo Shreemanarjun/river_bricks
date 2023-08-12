@@ -45,15 +45,33 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
       locale: locale,
       builder: (context, child) {
         if (mounted) {
-          child = ResponsiveBreakpoints.builder(
-            child: BouncingScrollWrapper.builder(context, child!),
+          ///Used for responsive design
+          ///Here you can define breakpoint and how the responsive should work
+          child = child = ResponsiveWrapper.builder(
+            BouncingScrollWrapper.builder(context, child!),
+            maxWidth: 1700,
+            minWidth: 450,
+            defaultScale: true,
             breakpoints: [
-              const Breakpoint(start: 0, end: 450, name: MOBILE),
-              const Breakpoint(start: 451, end: 800, name: TABLET),
-              const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+              const ResponsiveBreakpoint.resize(480, name: MOBILE),
+              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+              const ResponsiveBreakpoint.autoScaleDown(1200, name: DESKTOP),
+              const ResponsiveBreakpoint.autoScaleDown(1700, name: 'XL'),
             ],
           );
+
+          /// Add support for maximum text scale according to changes in
+          /// accessibilty in sytem settings
+          final mediaquery = MediaQuery.of(context);
+          child = MediaQuery(
+            data: mediaquery.copyWith(
+              textScaleFactor: mediaquery.textScaleFactor.clamp(0, 1.5),
+            ),
+            child: child,
+          );
+
+          /// Added annotate region by default to switch according to theme which
+          /// customize the system ui veray style
           child = AnnotatedRegion<SystemUiOverlayStyle>(
             value: currentTheme == ThemeMode.dark
                 ? SystemUiOverlayStyle.light.copyWith(
@@ -85,10 +103,12 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
         } else {
           child = const SizedBox.shrink();
         }
+
+        ///Add toast support for flash
         return Toast(
           navigatorKey: navigatorKey,
           child: child,
-        ).noInternetWidget();
+        ).monitorConnection();
       },
     );
   }
