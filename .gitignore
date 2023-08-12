@@ -15,3 +15,5 @@ build/
 
 bricks/riverpod_simple_architecture/CHANGELOG.md
 bricks/riverpod_simple_architecture/__brick__/custom_lint.log
+bricks/riverpod_simple_architecture/__brick__/.flutter-plugins
+bricks/riverpod_simple_architecture/__brick__/.flutter-plugins-dependencies
