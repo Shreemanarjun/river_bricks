@@ -1,3 +1,6 @@
+# 1.0.1+3
+- add vscode recommendation extensions
+
 # 1.0.1+2
 - fix gitignore
 
