@@ -1,3 +1,6 @@
+# 1.0.1+1
+- Fix project name in pubspec
+
 # 1.0.1+0
 - no internet widget refined and restructured for simple usecase
 - downgrade responsive framework (no migration note/docs to 1.1.0)
