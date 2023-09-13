@@ -2,7 +2,6 @@ import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:{{project_name.snakeCase()}}/core/router/auto_route_observer.dart';
 import 'package:{{project_name.snakeCase()}}/core/router/router_pod.dart';
 import 'package:{{project_name.snakeCase()}}/core/theme/app_theme.dart';
@@ -11,6 +10,7 @@ import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/helper/global_helper.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
+import 'package:{{project_name.snakeCase()}}/shared/widget/responsive_wrapper.dart';
 
 ///This class holds Material App or Cupertino App
 ///with routing,theming and locale setup .
@@ -47,17 +47,8 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
         if (mounted) {
           ///Used for responsive design
           ///Here you can define breakpoint and how the responsive should work
-          child = child = ResponsiveWrapper.builder(
-            BouncingScrollWrapper.builder(context, child!),
-            maxWidth: 1700,
-            minWidth: 450,
-            defaultScale: true,
-            breakpoints: [
-              const ResponsiveBreakpoint.resize(480, name: MOBILE),
-              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-              const ResponsiveBreakpoint.autoScaleDown(1200, name: DESKTOP),
-              const ResponsiveBreakpoint.autoScaleDown(1700, name: 'XL'),
-            ],
+          child = ResponsiveBreakPointWrapper(
+            child: child!,
           );
 
           /// Add support for maximum text scale according to changes in
