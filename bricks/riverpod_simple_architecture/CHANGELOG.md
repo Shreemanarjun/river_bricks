@@ -1,3 +1,7 @@
+# 1.0.1+4
+- upgraded responsive framework 
+- migration of dependencies to latest
+
 # 1.0.1+3
 - add vscode recommendation extensions
 
