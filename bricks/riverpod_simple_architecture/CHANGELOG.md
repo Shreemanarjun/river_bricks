@@ -1,3 +1,6 @@
+# 1.0.1+7
+- update docs
+
 # 1.0.1+6
 - fix issues
 

@@ -128,9 +128,6 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┗ 📜theme_controller.dart
  ┣ 📂data
  ┃ ┗ 📂service
- ┃ ┃ ┗ 📂theme
- ┃ ┃ ┃ ┣ 📜i_theme_service.dart
- ┃ ┃ ┃ ┗ 📜theme_service.dart
  ┣ 📂features
  ┃ ┣ 📂counter
  ┃ ┃ ┣ 📂controller
@@ -139,7 +136,6 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┃ ┗ 📜counter_state_pod.dart
  ┃ ┃ ┣ 📂view
  ┃ ┃ ┃ ┣ 📂widgets
- ┃ ┃ ┃ ┃ ┗ 📜theme_segmented_btn.dart
  ┃ ┃ ┃ ┗ 📜counter_page.dart
  ┃ ┃ ┗ 📜counter.dart
  ┃ ┗ 📂theme_segmented_btn
@@ -164,12 +160,10 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┣ 📂exception
  ┃ ┃ ┗ 📜base_exception.dart
  ┃ ┣ 📂helper
- ┃ ┃ ┣ 📜global_helper.dart
- ┃ ┃ ┗ 📜response_format_checker.dart
+ ┃ ┃ ┗ 📜global_helper.dart
  ┃ ┣ 📂pods
  ┃ ┃ ┣ 📜internet_checker_pod.dart
- ┃ ┃ ┣ 📜locale_pod.dart
- ┃ ┃ ┗ 📜theme_pod.dart
+ ┃ ┃ ┗ 📜locale_pod.dart
  ┃ ┣ 📂riverpod_ext
  ┃ ┃ ┣ 📜asynvalue_easy_when.dart
  ┃ ┃ ┣ 📜cache_extensions.dart
@@ -178,16 +172,16 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┗ 📜riverpod_observer.dart
  ┃ ┗ 📂widget
  ┃ ┃ ┣ 📜app_locale_popup.dart
- ┃ ┃ ┣ 📜circular_timer.dart
- ┃ ┃ ┗ 📜no_internet_widget.dart
+ ┃ ┃ ┣ 📜no_internet_widget.dart
+ ┃ ┃ ┗ 📜responsive_wrapper.dart
  ┣ 📜bootstrap.dart
  ┣ 📜init.dart
+ ┣ 📜main.dart
  ┣ 📜main_development.dart
  ┣ 📜main_production.dart
  ┗ 📜main_staging.dart
 
-
- 📦test
+📦test
  ┣ 📂app
  ┃ ┗ 📂view
  ┃ ┃ ┗ 📜app_test.dart
@@ -196,11 +190,6 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┃ ┗ 📜app_storage_test.dart
  ┃ ┗ 📂theme
  ┃ ┃ ┗ 📜theme_controller_pod_test.dart
- ┣ 📂counter
- ┃ ┣ 📂pod
- ┃ ┃ ┗ 📜counter_pod_test.dart
- ┃ ┗ 📂view
- ┃ ┃ ┗ 📜counter_page_test.dart
  ┣ 📂features
  ┃ ┣ 📂counter
  ┃ ┃ ┣ 📂pod
@@ -228,7 +217,8 @@ mason make riverpod_simple_architecture --project_name "Your Project Name"
  ┃ ┗ 📂widgets
  ┃ ┃ ┣ 📜app_locale_popup_test.dart
  ┃ ┃ ┗ 📜no_interenet_widget_test.dart
- ┗ 📜init_test.dart
+ ┣ 📜init_test.dart
+ ┗ 📜widget_test.dart
 ```
 
  ## License 🍀
