@@ -1,3 +1,6 @@
+# 1.0.1+5
+- fix issues
+
 # 1.0.1+4
 - upgraded responsive framework 
 - migration of dependencies to latest
