@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/dio_client_provider.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -63,19 +63,19 @@ class DefaultNoInternetWidget extends ConsumerStatefulWidget {
 }
 
 class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
-  InternetConnectionStatus? lastResult;
+  InternetStatus? lastResult;
   @visibleForTesting
-  void internetListener(InternetConnectionStatus status) {
+  void internetListener(InternetStatus status) {
     switch (status) {
-      case InternetConnectionStatus.connected:
+      case InternetStatus.connected:
         //  talker.debug('Data Reconnected.');
-        if (lastResult == InternetConnectionStatus.disconnected) {
+        if (lastResult == InternetStatus.disconnected) {
           ref.invalidate(dioProvider);
         } else {
           //talker.debug('First time');
         }
         break;
-      case InternetConnectionStatus.disconnected:
+      case InternetStatus.disconnected:
     }
     lastResult = status;
   }
@@ -86,9 +86,11 @@ class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
     ref.listen(
       internetCheckerPod,
       (previous, next) {
-        final status = next.value;
-        if (status != null) {
-          internetListener(status);
+        if (next is AsyncData) {
+          final status = next.value;
+          if (status != null) {
+            internetListener(status);
+          }
         }
       },
     );
@@ -96,9 +98,8 @@ class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
       data: (status) {
         return Align(
           alignment: Alignment.topCenter,
-          heightFactor:
-              status == InternetConnectionStatus.disconnected ? 1.0 : 0.0,
-          child: status == InternetConnectionStatus.disconnected
+          heightFactor: status == InternetStatus.disconnected ? 1.0 : 0.0,
+          child: status == InternetStatus.disconnected
               ? ((widget.noInternetWidget) ??
                       MaterialBanner(
                         content: const Text(
