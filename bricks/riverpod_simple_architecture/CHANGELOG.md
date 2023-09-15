@@ -1,3 +1,7 @@
+# 1.0.2+1
+- update internet checker to internet connectin plus for web support
+- update tests for 100% coverage
+
 # 1.0.1+7
 - update docs
 
