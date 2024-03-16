@@ -21,8 +21,7 @@ class ResponsiveBreakPointWrapper extends StatelessWidget {
 
 class ResponsiveViewWrapper extends StatelessWidget {
   final Widget child;
-  const ResponsiveViewWrapper({Key? key, required this.child})
-      : super(key: key);
+  const ResponsiveViewWrapper({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +29,10 @@ class ResponsiveViewWrapper extends StatelessWidget {
       maxWidth: 3840,
       child: ResponsiveScaledBox(
         width: ResponsiveValue<double>(context, conditionalValues: [
-          Condition.equals(name: MOBILE, value: 420),
-          Condition.equals(name: TABLET, value: 800),
-          Condition.equals(name: DESKTOP, value: 968),
-          Condition.equals(name: '4K', value: 1921),
-          // There are no conditions for width over 2668
-          // because the `maxWidth` is set to 1200 via the MaxWidthBox.
+          const Condition.equals(name: MOBILE, value: 420),
+          const Condition.equals(name: TABLET, value: 800),
+          const Condition.equals(name: DESKTOP, value: 1800),
+          const Condition.equals(name: '4K', value: 3840),
         ]).value,
         child:
             BouncingScrollWrapper.builder(context, child, dragWithMouse: true),

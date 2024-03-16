@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
@@ -18,7 +20,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 final talker = TalkerFlutter.init(
   settings: TalkerSettings(
-    maxHistoryItems: null,
+    // maxHistoryItems: null,
     useConsoleLogs: !kReleaseMode,
     enabled: !kReleaseMode,
   ),

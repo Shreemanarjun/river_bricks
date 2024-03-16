@@ -4,6 +4,64 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) async {
   context.logger.info('Post generation started');
+
+  final depprogress = context.logger.progress('Installing dependencies');
+
+  /// Run `Add dependencies` after generation.
+  final deps = [
+    "auto_route",
+    "dio",
+    "dio_smart_retry",
+    "duration",
+    "flash",
+    "flex_color_scheme",
+    "flutter_displaymode",
+    "flutter_riverpod",
+    "hive_flutter",
+    "internet_connection_checker_plus",
+    "intl",
+    "path_provider",
+    "platform_info",
+    "responsive_framework",
+    "talker_dio_logger",
+    "talker_flutter",
+    "velocity_x",
+  ];
+  try {
+    await Process.run(
+      'dart',
+      ['pub', 'add', ...deps],
+      runInShell: true,
+    );
+    depprogress.complete("All dependecies added");
+  } catch (e) {
+    depprogress.cancel();
+    depprogress.fail(e.toString());
+  }
+  final devdepprogress = context.logger.progress('Installing dependencies');
+
+  /// Run `Add dev dependencies` after generation.
+  final devdeps = [
+    "auto_route_generator",
+    "build_runner",
+    "custom_lint",
+    "flutter_lints",
+    "mocktail",
+    "riverpod_lint",
+    "riverpod_test",
+    "very_good_analysis",
+  ];
+  try {
+    await Process.run(
+      'dart',
+      ['pub', 'add', '--dev', ...devdeps],
+      runInShell: true,
+    );
+    devdepprogress.complete("All dev dependecies added");
+  } catch (e) {
+    devdepprogress.cancel();
+    devdepprogress.fail(e.toString());
+  }
   final packageprogress = context.logger.progress('Installing packages');
 
   /// Run `flutter packages get` after generation.
@@ -13,7 +71,33 @@ void run(HookContext context) async {
       ['packages', 'get'],
       runInShell: true,
     );
-    packageprogress.complete();
+    packageprogress.complete("Got all flutter packages");
+  } catch (e) {
+    packageprogress.cancel();
+    packageprogress.fail(e.toString());
+  }
+
+  /// Run `flutter pub get` after generation.
+  try {
+    await Process.run(
+      'dart',
+      ['pub', 'get'],
+      runInShell: true,
+    );
+    packageprogress.complete("Got dart packages");
+  } catch (e) {
+    packageprogress.cancel();
+    packageprogress.fail(e.toString());
+  }
+
+  /// Run `flutter pub get` after generation.
+  try {
+    await Process.run(
+      'dart',
+      ['pub', 'remove', 'flutter_gen'],
+      runInShell: true,
+    );
+    packageprogress.complete("Removed unnecessary packages");
   } catch (e) {
     packageprogress.cancel();
     packageprogress.fail(e.toString());
@@ -51,7 +135,7 @@ void run(HookContext context) async {
   }
   context.logger.info('Post generation completed');
   context.logger.info(
-      """\n\n 🎉 Congratulations on generating your code using the provided template! 
+      """\n\n 🎉 Congratulations on generating your code using the provided template! with version 
       \n 🚀 You've built an impressive library with powerful features.
       \n 💪 Utilize Riverpod for efficient state management,
       \n Auto Route for seamless navigation, and Dio for API requests.
