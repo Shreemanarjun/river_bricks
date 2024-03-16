@@ -1,3 +1,6 @@
+# 2.0.2+3
+- Fix import with post generation conflicts
+
 # 2.0.1+2
 - Fix project name replacement
 

@@ -5,7 +5,8 @@ import 'package:mason/mason.dart';
 void run(HookContext context) async {
   context.logger.info('Post generation started');
 
-  final depprogress = context.logger.progress('Installing dependencies');
+  final depprogress =
+      context.logger.progress('Installing general dependencies');
 
   /// Run `Add dependencies` after generation.
   final deps = [
@@ -38,7 +39,7 @@ void run(HookContext context) async {
     depprogress.cancel();
     depprogress.fail(e.toString());
   }
-  final devdepprogress = context.logger.progress('Installing dependencies');
+  final devdepprogress = context.logger.progress('Installing dev dependencies');
 
   /// Run `Add dev dependencies` after generation.
   final devdeps = [
@@ -62,7 +63,8 @@ void run(HookContext context) async {
     devdepprogress.cancel();
     devdepprogress.fail(e.toString());
   }
-  final packageprogress = context.logger.progress('Installing packages');
+  final packageprogress =
+      context.logger.progress('Installing flutter packages');
 
   /// Run `flutter packages get` after generation.
   try {
@@ -78,44 +80,33 @@ void run(HookContext context) async {
   }
 
   /// Run `flutter pub get` after generation.
+  final additionalpackageprogress =
+      context.logger.progress('Installing dart packages');
   try {
     await Process.run(
       'dart',
       ['pub', 'get'],
       runInShell: true,
     );
-    packageprogress.complete("Got dart packages");
+    additionalpackageprogress.complete("Got dart packages");
   } catch (e) {
-    packageprogress.cancel();
-    packageprogress.fail(e.toString());
+    additionalpackageprogress.cancel();
+    additionalpackageprogress.fail(e.toString());
   }
 
-  /// Run `flutter pub get` after generation.
+  /// Run `Remove flutter_gen` after generation.
+  final fluttergenprogress =
+      context.logger.progress('Removing conflicting packages');
   try {
     await Process.run(
       'dart',
       ['pub', 'remove', 'flutter_gen'],
       runInShell: true,
     );
-    packageprogress.complete("Removed unnecessary packages");
+    fluttergenprogress.complete("Removed conflicting packages");
   } catch (e) {
-    packageprogress.cancel();
-    packageprogress.fail(e.toString());
-  }
-
-  /// Run `dart fix --apply` after generation.
-  final codefixprogress = context.logger.progress('Fixing & Updating code');
-
-  try {
-    await Process.run(
-      'dart',
-      ['fix', '--apply'],
-      runInShell: true,
-    );
-    codefixprogress.complete();
-  } catch (e) {
-    codefixprogress.cancel();
-    codefixprogress.fail(e.toString());
+    fluttergenprogress.cancel();
+    fluttergenprogress.fail(e.toString());
   }
 
   /// Run `flutter pub run build_runner` after generation.
@@ -134,6 +125,21 @@ void run(HookContext context) async {
     codegenprogress.fail(e.toString());
   }
   context.logger.info('Post generation completed');
+
+  /// Run `dart fix --apply` after generation.
+  final codefixprogress = context.logger.progress('Fixing & Updating code');
+
+  try {
+    await Process.run(
+      'dart',
+      ['fix', '--apply'],
+      runInShell: true,
+    );
+    codefixprogress.complete();
+  } catch (e) {
+    codefixprogress.cancel();
+    codefixprogress.fail(e.toString());
+  }
   context.logger.info(
       """\n\n 🎉 Congratulations on generating your code using the provided template! with version 
       \n 🚀 You've built an impressive library with powerful features.
