@@ -34,7 +34,7 @@ void run(HookContext context) async {
       ['pub', 'add', ...deps],
       runInShell: true,
     );
-    depprogress.complete("All dependecies added");
+    depprogress.complete("All general dependencies added");
   } catch (e) {
     depprogress.cancel();
     depprogress.fail(e.toString());
@@ -58,7 +58,7 @@ void run(HookContext context) async {
       ['pub', 'add', '--dev', ...devdeps],
       runInShell: true,
     );
-    devdepprogress.complete("All dev dependecies added");
+    devdepprogress.complete("All dev dependencies added");
   } catch (e) {
     devdepprogress.cancel();
     devdepprogress.fail(e.toString());
@@ -126,19 +126,34 @@ void run(HookContext context) async {
   }
   context.logger.info('Post generation completed');
 
-  /// Run `dart fix --apply` after generation.
-  final codefixprogress = context.logger.progress('Fixing & Updating code');
+  // /// Code fixer
+  // final codefixprogress = context.logger.progress('Fixing & Updating code');
+
+  // try {
+  //   await Process.run(
+  //     'dart',
+  //     ['fix', '--apply'],
+  //     runInShell: true,
+  //   );
+  //   codefixprogress.complete();
+  // } catch (e) {
+  //   codefixprogress.cancel();
+  //   codefixprogress.fail(e.toString());
+  // }
+
+  /// Run `mason upgrade -g` for additional updates for mason
+  final masonpackageupgrade = context.logger.progress('Upgrading mason');
 
   try {
     await Process.run(
-      'dart',
-      ['fix', '--apply'],
+      'mason',
+      ['upgrade', '-g'],
       runInShell: true,
     );
-    codefixprogress.complete();
+    masonpackageupgrade.complete("Upgraded mason");
   } catch (e) {
-    codefixprogress.cancel();
-    codefixprogress.fail(e.toString());
+    masonpackageupgrade.cancel();
+    masonpackageupgrade.fail(e.toString());
   }
   context.logger.info(
       """\n\n 🎉 Congratulations on generating your code using the provided template! with version 

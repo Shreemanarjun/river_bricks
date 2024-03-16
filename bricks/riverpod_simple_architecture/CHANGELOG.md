@@ -1,3 +1,12 @@
+# 2.0.5+5
+- Fix spellings
+  
+# 2.0.4+4
+- Added mason upgrades
+
+# 2.0.3+4
+- Fix localization errors
+
 # 2.0.2+3
 - Fix import with post generation conflicts
 
