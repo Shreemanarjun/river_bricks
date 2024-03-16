@@ -1,3 +1,8 @@
+# 2.0.7+7
+- fixed cache extension with commenting onResume function
+- added additional pub get on all steps complete
+- Covered 100% of code now....
+
 # 2.0.5+5
 - Fix spellings
   

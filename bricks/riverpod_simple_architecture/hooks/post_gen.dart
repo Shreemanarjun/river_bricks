@@ -124,6 +124,21 @@ void run(HookContext context) async {
     codegenprogress.cancel();
     codegenprogress.fail(e.toString());
   }
+
+  /// Run `flutter pub get` after generation.
+  final lpackageprogress =
+      context.logger.progress('Checking updation of pubspec');
+  try {
+    await Process.run(
+      'dart',
+      ['pub', 'get'],
+      runInShell: true,
+    );
+    lpackageprogress.complete("pubspec updation compelete");
+  } catch (e) {
+    lpackageprogress.cancel();
+    additionalpackageprogress.fail(e.toString());
+  }
   context.logger.info('Post generation completed');
 
   // /// Code fixer
@@ -155,6 +170,21 @@ void run(HookContext context) async {
     masonpackageupgrade.cancel();
     masonpackageupgrade.fail(e.toString());
   }
+
+  /// Run `Remove flutter_gen` after generation.
+  final coverageprogress = context.logger.progress('Generating coverage');
+  try {
+    await Process.run(
+      'flutter',
+      ['test', '--coverage'],
+      runInShell: true,
+    );
+    coverageprogress.complete("Coverage file generate");
+  } catch (e) {
+    coverageprogress.cancel();
+    coverageprogress.fail(e.toString());
+  }
+  //flutter test --coverage
   context.logger.info(
       """\n\n 🎉 Congratulations on generating your code using the provided template! with version 
       \n 🚀 You've built an impressive library with powerful features.

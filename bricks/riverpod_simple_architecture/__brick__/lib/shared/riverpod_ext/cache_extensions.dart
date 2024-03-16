@@ -18,13 +18,13 @@ extension CacheExtension<T> on AutoDisposeRef<T> {
       link.close();
     });
 
-    // when we recall the provider again
+    /// uncomment for better caching leaking fix
+    ///    // when we recall the provider again
     // the timer will be canceled and the link will no longer close.
-    onResume(() {
-      timer?.cancel();
-      timer = Timer(duration, link.close);
-    });
-
+    // onResume(() {
+    //   timer?.cancel();
+    //   timer = Timer(duration, link.close);
+    // });
     timer = Timer(duration, link.close);
 
     return link;
