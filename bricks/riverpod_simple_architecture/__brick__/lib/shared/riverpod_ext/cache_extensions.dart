@@ -25,6 +25,7 @@ extension CacheExtension<T> on AutoDisposeRef<T> {
     //   timer?.cancel();
     //   timer = Timer(duration, link.close);
     // });
+
     timer = Timer(duration, link.close);
 
     return link;

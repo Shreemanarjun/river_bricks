@@ -1,3 +1,10 @@
+# 2.0.10+8
+- Added secure storage for encryption 
+- Replaced bootstrap with Splasher. So user can have a smooth splash screen without flickering(deferFrame/allowFrame).
+- (The template now using two runApp which will helpful for long async initialization with a freedback loading screen.)
+- Fixed error on responsive framework where type cast failed due to the flutter engines first frame always return heigh and width as 0.
+
+
 # 2.0.7+7
 - fixed cache extension with commenting onResume function
 - added additional pub get on all steps complete

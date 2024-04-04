@@ -38,6 +38,7 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
       darkTheme: Themes.darkTheme,
       themeMode: currentTheme,
       routerConfig: approuter.config(
+        placeholder: (context) => const SizedBox.shrink(),
         navigatorObservers: () => [
           RouterObserver(),
         ],
@@ -50,6 +51,9 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
           ///Used for responsive design
           ///Here you can define breakpoint and how the responsive should work
           child = ResponsiveBreakPointWrapper(
+            firstFrameWidget: Container(
+              color: Colors.white,
+            ),
             child: child!,
           );
 

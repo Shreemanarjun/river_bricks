@@ -17,6 +17,7 @@ void run(HookContext context) async {
     "flash",
     "flex_color_scheme",
     "flutter_displaymode",
+    "flutter_secure_storage",
     "flutter_riverpod",
     "hive_flutter",
     "internet_connection_checker_plus",
