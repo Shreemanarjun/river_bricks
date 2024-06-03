@@ -1,3 +1,11 @@
+# 2.0.11+11
+- Fix tests for internet checker
+
+
+# 2.0.10+10
+- Fix IOS loading splash due to keychain access
+- Fix themed segment button(remove MaterialStatePropertyAll with WidgetStatePropertyAll) (Flutter 3.22)
+
 # 2.0.10+8
 - Added secure storage for encryption 
 - Replaced bootstrap with Splasher. So user can have a smooth splash screen without flickering(deferFrame/allowFrame).
