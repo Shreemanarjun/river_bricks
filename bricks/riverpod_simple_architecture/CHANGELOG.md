@@ -1,3 +1,6 @@
+# 2.0.13+13
+- Fixed unused import
+
 # 2.0.12+12
 - Pinning dependency
 - Chore: Update dependencies to latest
