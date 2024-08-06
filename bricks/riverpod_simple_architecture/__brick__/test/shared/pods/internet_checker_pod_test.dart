@@ -4,7 +4,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 
-import '../widgets/no_interenet_widget_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
