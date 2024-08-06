@@ -1,3 +1,9 @@
+# 2.0.12+12
+- Pinning dependency
+- Chore: Update dependencies to latest
+- Responsive framework nowusing a fork from [this repo](https://github.com/Shreemanarjun/ResponsiveFramework.git)
+- Updated on test to cover 100%
+
 # 2.0.11+11
 - Fix tests for internet checker
 

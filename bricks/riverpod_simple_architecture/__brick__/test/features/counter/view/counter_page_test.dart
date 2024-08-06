@@ -30,7 +30,9 @@ void main() {
       await tester.pumpApp(
         ProviderScope(
           overrides: [
-            enableInternetCheckerPod.overrideWithValue(false),
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
             appBoxProvider.overrideWithValue(appBox),
           ],
           child: const CounterPage(),
@@ -53,7 +55,9 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          enableInternetCheckerPod.overrideWithValue(false),
+          enableInternetCheckerPod.overrideWith(
+            (ref) => false,
+          ),
           appBoxProvider.overrideWithValue(appBox),
           intialCounterValuePod.overrideWithValue(state),
         ],
@@ -78,7 +82,9 @@ void main() {
       await tester.pumpApp(
         ProviderScope(
           overrides: [
-            enableInternetCheckerPod.overrideWithValue(false),
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
             appBoxProvider.overrideWithValue(appBox),
             intialCounterValuePod.overrideWithValue(state),
           ],
@@ -97,7 +103,9 @@ void main() {
       const state = 42;
       final container = ProviderContainer(
         overrides: [
-          enableInternetCheckerPod.overrideWithValue(false),
+          enableInternetCheckerPod.overrideWith(
+            (ref) => false,
+          ),
           appBoxProvider.overrideWithValue(appBox),
           intialCounterValuePod.overrideWithValue(state),
         ],

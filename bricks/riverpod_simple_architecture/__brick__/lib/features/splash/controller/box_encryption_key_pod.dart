@@ -11,7 +11,7 @@ final boxEncryptionKeyPod = FutureProvider.autoDispose<Uint8List>((ref) async {
         encryptedSharedPreferences: true,
       ),
       iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.unlocked,
+        accessibility: KeychainAccessibility.first_unlock,
       ));
 
   ///TODO: change your unique storage key

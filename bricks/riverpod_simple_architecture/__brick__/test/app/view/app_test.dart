@@ -24,7 +24,9 @@ Future<void> main() async {
       await tester.pumpApp(
         ProviderScope(
           overrides: [
-            enableInternetCheckerPod.overrideWithValue(false),
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
             appBoxProvider.overrideWithValue(appBox),
           ],
           child: const CounterPage(),

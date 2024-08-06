@@ -34,7 +34,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -54,7 +56,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -77,7 +81,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -117,7 +123,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -154,7 +162,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -204,7 +214,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );
@@ -254,7 +266,9 @@ void main() {
         (tester) async {
           final container = ProviderContainer(
             overrides: [
-              enableInternetCheckerPod.overrideWithValue(false),
+              enableInternetCheckerPod.overrideWith(
+                (ref) => false,
+              ),
               appBoxProvider.overrideWithValue(appBox),
             ],
           );

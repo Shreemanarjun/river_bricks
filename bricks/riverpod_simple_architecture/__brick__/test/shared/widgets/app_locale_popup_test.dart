@@ -27,7 +27,9 @@ void main() {
       await tester.pumpApp(
         ProviderScope(
           overrides: [
-            enableInternetCheckerPod.overrideWithValue(false),
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
             appBoxProvider.overrideWithValue(appBox),
           ],
           child: const Scaffold(
@@ -53,7 +55,9 @@ void main() {
       await tester.pumpApp(
         ProviderScope(
           overrides: [
-            enableInternetCheckerPod.overrideWithValue(false),
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
             appBoxProvider.overrideWithValue(appBox),
           ],
           child: const Scaffold(
