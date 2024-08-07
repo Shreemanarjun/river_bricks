@@ -5,7 +5,8 @@ import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/splash/controller/box_encryption_key_pod.dart';
 import 'package:{{project_name.snakeCase()}}/init.dart';
-import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer.dart';
+
+import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
 final futureInitializerPod =
     FutureProvider.autoDispose<ProviderContainer>((ref) async {
@@ -33,8 +34,21 @@ final futureInitializerPod =
       appBoxProvider.overrideWithValue(appBox),
     ],
     observers: [
-      MyObserverLogger(
+      ///Added new talker riverpod observer
+      ///
+      /// If you want old behaviour
+      /// Replace with
+      ///
+      ///  MyObserverLogger( talker: talker,)
+      ///
+      ///
+      ///
+      ///
+      TalkerRiverpodObserver(
         talker: talker,
+        settings: const TalkerRiverpodLoggerSettings(
+          printProviderDisposed: true,
+        ),
       ),
     ],
   );

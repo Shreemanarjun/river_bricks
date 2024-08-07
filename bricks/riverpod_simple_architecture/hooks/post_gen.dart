@@ -27,6 +27,7 @@ void run(HookContext context) async {
     "responsive_framework:{'git':{'url':'https://github.com/Shreemanarjun/ResponsiveFramework.git'}}",
     "talker_dio_logger",
     "talker_flutter",
+    "talker_riverpod_logger"
     "velocity_x",
   ];
   try {
