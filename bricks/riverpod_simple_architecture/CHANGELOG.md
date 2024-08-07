@@ -1,7 +1,9 @@
+# 2.0.16+16
+- Fix issues 
+
 # 2.0.15+15
 - Add talker_riverpod_logger for better logging
 - Refactored code for logger of riverpod
-
 
 # 2.0.14+14
 - Update project name include in class App
