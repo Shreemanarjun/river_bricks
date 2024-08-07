@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 final boxEncryptionKeyPod = FutureProvider.autoDispose<Uint8List>((ref) async {
   const secureStorage = FlutterSecureStorage(

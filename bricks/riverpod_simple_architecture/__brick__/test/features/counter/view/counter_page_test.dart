@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';

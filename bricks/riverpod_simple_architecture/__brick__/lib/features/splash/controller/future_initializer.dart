@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
