@@ -1,3 +1,6 @@
+# 2.0.20+20
+- Fixed hive_ce_flutter import replace old hive import
+
 # 2.0.19+19
 - Fixed Wasm Support for flutter_secure_storage
 
