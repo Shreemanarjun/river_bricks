@@ -1,3 +1,9 @@
+# 2.0.19+19
+- Fixed Wasm Support for flutter_secure_storage
+
+# 2.0.18+18
+- dependecy fixes
+
 # 2.0.17+17
 - Fix issues
 

@@ -9,7 +9,7 @@ void run(HookContext context) async {
       context.logger.progress('Installing general dependencies');
 
   /// Run `Add dependencies` after generation.
-  final deps = [
+  final deps = <String>[
     "auto_route",
     "dio",
     "dio_smart_retry",
@@ -19,7 +19,7 @@ void run(HookContext context) async {
     "flutter_displaymode",
     "flutter_secure_storage",
     "flutter_riverpod",
-    "hive_flutter",
+    "hive_ce_flutter",
     "internet_connection_checker_plus",
     "intl",
     "path_provider",
@@ -27,7 +27,7 @@ void run(HookContext context) async {
     "responsive_framework:{'git':{'url':'https://github.com/Shreemanarjun/ResponsiveFramework.git'}}",
     "talker_dio_logger",
     "talker_flutter",
-    "talker_riverpod_logger"
+    "talker_riverpod_logger",
     "velocity_x",
   ];
   try {
@@ -44,7 +44,7 @@ void run(HookContext context) async {
   final devdepprogress = context.logger.progress('Installing dev dependencies');
 
   /// Run `Add dev dependencies` after generation.
-  final devdeps = [
+  final devdeps = <String>[
     "auto_route_generator",
     "build_runner",
     "custom_lint",
