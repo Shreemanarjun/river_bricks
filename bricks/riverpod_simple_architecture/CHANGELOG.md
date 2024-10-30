@@ -1,3 +1,6 @@
+# 2.0.21+21
+- Added success error handler
+
 # 2.0.20+20
 - Fixed hive_ce_flutter import replace old hive import
 
