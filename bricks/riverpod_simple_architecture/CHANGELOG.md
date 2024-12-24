@@ -1,3 +1,9 @@
+# 2.0.23+23
+- fix missing dependency
+- fixed imports
+- remove depreceate class,functions(`AutoDisposeRef` -> `Ref`)
+
+
 # 2.0.22+22
 - Fixed for new version upgrade
 ```dart
