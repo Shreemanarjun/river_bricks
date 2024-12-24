@@ -1,3 +1,11 @@
+# 2.0.22+22
+- Fixed for new version upgrade
+```dart
+mason upgrade --global
+The current mason version is 0.1.0.
+Because riverpod_simple_architecture requires mason version >=0.1.0-dev.49 <0.1.0, version solving failed.
+```
+
 # 2.0.21+21
 - Added success error handler
 
@@ -14,7 +22,7 @@
 - Fix issues
 
 # 2.0.16+16
-- Fix issues 
+- Fix issues
 
 # 2.0.15+15
 - Add talker_riverpod_logger for better logging
@@ -41,7 +49,7 @@
 - Fix themed segment button(remove MaterialStatePropertyAll with WidgetStatePropertyAll) (Flutter 3.22)
 
 # 2.0.10+8
-- Added secure storage for encryption 
+- Added secure storage for encryption
 - Replaced bootstrap with Splasher. So user can have a smooth splash screen without flickering(deferFrame/allowFrame).
 - (The template now using two runApp which will helpful for long async initialization with a freedback loading screen.)
 - Fixed error on responsive framework where type cast failed due to the flutter engines first frame always return heigh and width as 0.
@@ -54,7 +62,7 @@
 
 # 2.0.5+5
 - Fix spellings
-  
+
 # 2.0.4+4
 - Added mason upgrades
 
@@ -85,7 +93,7 @@
 - fix issues
 
 # 1.0.1+4
-- upgraded responsive framework 
+- upgraded responsive framework
 - migration of dependencies to latest
 
 # 1.0.1+3
@@ -172,7 +180,7 @@
 - 🚑 fix docs
 
 # 0.1.0+11
-- 🚑 fix state restoration on internet disconnection 
+- 🚑 fix state restoration on internet disconnection
 
 # 0.1.0+10
 - 🚑 theme selection in ui

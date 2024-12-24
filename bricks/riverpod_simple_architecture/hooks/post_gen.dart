@@ -22,6 +22,7 @@ void run(HookContext context) async {
     "hive_ce_flutter",
     "internet_connection_checker_plus",
     "intl",
+    "multiple_result",
     "path_provider",
     "platform_info",
     "responsive_framework:{'git':{'url':'https://github.com/Shreemanarjun/ResponsiveFramework.git'}}",
@@ -188,7 +189,7 @@ void run(HookContext context) async {
   }
   //flutter test --coverage
   context.logger.info(
-      """\n\n 🎉 Congratulations on generating your code using the provided template! with version 
+      """\n\n 🎉 Congratulations on generating your code using the provided template! with version
       \n 🚀 You've built an impressive library with powerful features.
       \n 💪 Utilize Riverpod for efficient state management,
       \n Auto Route for seamless navigation, and Dio for API requests.
