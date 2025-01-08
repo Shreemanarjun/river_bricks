@@ -1,3 +1,9 @@
+# 2.0.24+24
+- Migrated to slang for localization
+- Fix tests for internet checker
+- Add `spot` for widget test
+
+
 # 2.0.23+23
 - fix missing dependency
 - fixed imports
