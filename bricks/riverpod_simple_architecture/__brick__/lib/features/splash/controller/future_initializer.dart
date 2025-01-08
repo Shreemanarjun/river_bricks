@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
@@ -24,6 +27,11 @@ final futureInitializerPod =
     },
   );
 
+  ///Load device translations
+  ///
+  AppLocale deviceLocale = AppLocaleUtils.findDeviceLocale();
+  final translations = await deviceLocale.build();
+
   ///TODO: Replace box name with your unique name
   final appBox = await Hive.openBox(
     'AppBox',
@@ -32,6 +40,10 @@ final futureInitializerPod =
   return ProviderContainer(
     overrides: [
       appBoxProvider.overrideWithValue(appBox),
+      translationsPod.overrideWith(
+        (ref) => translations,
+      ),
+      enableInternetCheckerPod.overrideWithValue(false),
     ],
     observers: [
       ///Added new talker riverpod observer

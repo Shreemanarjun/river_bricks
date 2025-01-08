@@ -10,8 +10,10 @@ import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/view/counter_page.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
 import '../../../helpers/helpers.dart';
 
@@ -27,15 +29,17 @@ void main() {
       appBox.clear();
     });
     testWidgets('renders CounterView', (tester) async {
+      final translation = AppLocale.en.buildSync();
       await tester.pumpApp(
-        ProviderScope(
+        child: const CounterPage(),
+        container: ProviderContainer(
           overrides: [
             enableInternetCheckerPod.overrideWith(
               (ref) => false,
             ),
             appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith((ref) => translation)
           ],
-          child: const CounterPage(),
         ),
       );
       expect(find.byType(CounterView), findsOneWidget);
@@ -52,7 +56,7 @@ void main() {
     });
     testWidgets('renders current count', (tester) async {
       const state = 42;
-
+      final translation = AppLocale.en.buildSync();
       final container = ProviderContainer(
         overrides: [
           enableInternetCheckerPod.overrideWith(
@@ -60,15 +64,14 @@ void main() {
           ),
           appBoxProvider.overrideWithValue(appBox),
           intialCounterValuePod.overrideWithValue(state),
+          translationsPod.overrideWith((ref) => translation)
         ],
         observers: [MyObserverLogger(talker: talker)],
       );
       addTearDown(container.dispose);
       await tester.pumpApp(
-        UncontrolledProviderScope(
-          container: container,
-          child: const CounterView(),
-        ),
+        child: const CounterView(),
+        container: container,
       );
       await tester.pumpAndSettle();
 
@@ -78,17 +81,18 @@ void main() {
     testWidgets('calls increment when increment button is tapped',
         (tester) async {
       const state = 42;
-
+      final translation = AppLocale.en.buildSync();
       await tester.pumpApp(
-        ProviderScope(
+        child: const CounterView(),
+        container: ProviderContainer(
           overrides: [
             enableInternetCheckerPod.overrideWith(
               (ref) => false,
             ),
             appBoxProvider.overrideWithValue(appBox),
             intialCounterValuePod.overrideWithValue(state),
+            translationsPod.overrideWith((ref) => translation)
           ],
-          child: const CounterView(),
         ),
       );
       await tester.pump();
@@ -101,6 +105,7 @@ void main() {
     testWidgets('calls decrement when decrement button is tapped',
         (tester) async {
       const state = 42;
+      final translation = AppLocale.en.buildSync();
       final container = ProviderContainer(
         overrides: [
           enableInternetCheckerPod.overrideWith(
@@ -108,14 +113,13 @@ void main() {
           ),
           appBoxProvider.overrideWithValue(appBox),
           intialCounterValuePod.overrideWithValue(state),
+          translationsPod.overrideWith((ref) => translation)
         ],
       );
 
       await tester.pumpApp(
-        UncontrolledProviderScope(
-          container: container,
-          child: const CounterView(),
-        ),
+        child: const CounterView(),
+        container: container,
       );
 
       await tester.runAsync(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 ///This widget can be used to change the local in a popup
@@ -10,26 +10,41 @@ class AppLocalePopUp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return PopupMenuButton<Locale>(
-        initialValue: AppLocalizations.supportedLocales.first,
-        icon: const Icon(Icons.translate),
+    final t = ref.watch(translationsPod);
+    final curentlocale = t.$meta.locale;
+    final localeName = t["locale_${curentlocale.languageCode}"].toString();
+
+    return PopupMenuButton<AppLocale>(
+        initialValue: AppLocaleUtils.parse(curentlocale.languageCode),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            localeName.text.extraBlack.make(),
+            const Icon(Icons.arrow_drop_down),
+          ],
+        ),
+        //  icon: const Icon(Icons.translate),
         // Callback that sets the selected popup menu item.
-        onSelected: (locale) {
-          ref.read(localePod.notifier).changeLocale(locale: locale);
+        onSelected: (locale) async {
+          final update = switch (locale) {
+            AppLocale.en => await AppLocale.en.build(),
+            AppLocale.es => await AppLocale.es.build(),
+          };
+          ref.read(translationsPod.notifier).update(
+                (state) => update,
+              );
         },
-        itemBuilder: (BuildContext context) =>
-            AppLocalizations.supportedLocales.map(
+        itemBuilder: (BuildContext context) => AppLocale.values.map(
               (e) {
-                final currentLocale = ref.watch(localePod);
-                return PopupMenuItem<Locale>(
+                return PopupMenuItem<AppLocale>(
                   value: e,
-                  child: e == currentLocale
+                  child: e.languageCode == curentlocale.languageCode
                       ? SelectedLocaleItem(
-                          locale: e,
+                          locale: e.flutterLocale,
                           key: ValueKey('selected ${e.languageCode}'),
                         )
                       : UnselectedLocaleItem(
-                          locale: e,
+                          locale: e.flutterLocale,
                           key: ValueKey('unselected ${e.languageCode}'),
                         ),
                 );
@@ -38,7 +53,7 @@ class AppLocalePopUp extends ConsumerWidget {
   }
 }
 
-class SelectedLocaleItem extends StatelessWidget {
+class SelectedLocaleItem extends ConsumerWidget {
   const SelectedLocaleItem({
     super.key,
     required this.locale,
@@ -46,18 +61,20 @@ class SelectedLocaleItem extends StatelessWidget {
   final Locale locale;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = ref.watch(translationsPod);
+    final localeName = t["locale_${locale.languageCode}"].toString();
     return <Widget>[
       const Icon(
         Icons.check,
         color: Colors.green,
       ),
-      getLanguageName(locale).text.bold.isIntrinsic.make(),
+      localeName.text.bold.isIntrinsic.make(),
     ].hStack();
   }
 }
 
-class UnselectedLocaleItem extends StatelessWidget {
+class UnselectedLocaleItem extends ConsumerWidget {
   const UnselectedLocaleItem({
     super.key,
     required this.locale,
@@ -65,15 +82,13 @@ class UnselectedLocaleItem extends StatelessWidget {
   final Locale locale;
 
   @override
-  Widget build(BuildContext context) {
-    return getLanguageName(locale).text.bold.isIntrinsic.make();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = ref.watch(translationsPod);
+    final localeName = t["locale_${locale.languageCode}"].toString();
+    return Localizations.override(
+      context: context,
+      locale: locale,
+      child: localeName.text.bold.isIntrinsic.make(),
+    );
   }
-}
-
-String getLanguageName(Locale e) {
-  final languageMap = {
-    'en': 'English',
-    'es': 'Spanish',
-  };
-  return languageMap[e.languageCode] ?? 'Unknown language';
 }

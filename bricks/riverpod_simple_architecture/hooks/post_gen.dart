@@ -17,7 +17,7 @@ void run(HookContext context) async {
     "flash",
     "flex_color_scheme",
     "flutter_displaymode",
-    "flutter_secure_storage",
+    "flutter_secure_storage_x",
     "flutter_riverpod",
     "hive_ce_flutter",
     "internet_connection_checker_plus",
@@ -26,10 +26,12 @@ void run(HookContext context) async {
     "path_provider",
     "platform_info",
     "responsive_framework:{'git':{'url':'https://github.com/Shreemanarjun/ResponsiveFramework.git'}}",
-    "talker_dio_logger",
+    "slang",
+    "slang_flutter"
+        "talker_dio_logger",
     "talker_flutter",
     "talker_riverpod_logger",
-    "velocity_x",
+    "velocity_x:{'git':{'url':'https://github.com/Shreemanarjun/VelocityX.git'}}",
   ];
   try {
     await Process.run(
@@ -53,7 +55,8 @@ void run(HookContext context) async {
     "mocktail",
     "riverpod_lint",
     "riverpod_test",
-    "very_good_analysis",
+    "slang_build_runner"
+        "very_good_analysis",
   ];
   try {
     await Process.run(

@@ -23,7 +23,7 @@ final talker = TalkerFlutter.init(
   logger: TalkerLogger(
     output: debugPrint,
     settings: TalkerLoggerSettings(
-      enableColors: !Platform.I.isIOS,
+      enableColors: !Platform.I.iOS,
     ),
   ),
 );

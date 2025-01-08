@@ -124,18 +124,17 @@ class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
               : const SizedBox.shrink(),
         );
       },
-      error: (error, stackTrace) => MaterialBanner(
-        content:
-            Text("Unable to check internet due to $error").text.red500.make(),
-        actions: [
+      error: (error, stackTrace) => Row(
+        children: [
+          "$error".text.red500.make().expand(),
           ElevatedButton(
             onPressed: () {
               ref.invalidate(internetCheckerNotifierPod);
             },
             child: const Text('Retry').text.red500.make(),
-          ),
+          ).flexible(),
         ],
-      ).safeArea(),
+      ),
       loading: () => const LinearProgressIndicator(),
     );
   }

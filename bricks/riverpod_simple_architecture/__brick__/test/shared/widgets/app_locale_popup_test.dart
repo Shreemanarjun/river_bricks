@@ -5,8 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
+import 'package:spot/spot.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -24,81 +27,88 @@ void main() {
     testWidgets(
         'renders Applocalepopup within default English should be selected ',
         (tester) async {
-      await tester.pumpApp(
-        ProviderScope(
-          overrides: [
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
-            appBoxProvider.overrideWithValue(appBox),
-          ],
-          child: const Scaffold(
-            body: AppLocalePopUp(),
+      final translation = AppLocale.en.buildSync();
+      final container = ProviderContainer(
+        overrides: [
+          enableInternetCheckerPod.overrideWith(
+            (ref) => false,
           ),
+          appBoxProvider.overrideWithValue(appBox),
+          translationsPod.overrideWith(
+            (ref) => translation,
+          )
+        ],
+      );
+
+      await tester.pumpApp(
+        child: const Scaffold(
+          body: AppLocalePopUp(),
         ),
+        container: container,
       );
       expect(find.byType(AppLocalePopUp), findsOneWidget);
       await tester.runAsync(() async {
-        await tester.tap(find.byIcon(Icons.translate));
-        await tester.pumpAndSettle();
+        await tester.tap(find.text("English"));
+        await tester.pump();
       });
+
       expect(
-          find.widgetWithText(
-            SelectedLocaleItem,
-            'English',
-            skipOffstage: false,
-          ),
-          findsOneWidget);
+        find.byIcon(
+          Icons.check,
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.widgetWithText(
+          SelectedLocaleItem,
+          'English',
+          skipOffstage: false,
+        ),
+        findsOneWidget,
+      );
     });
     testWidgets('renders Applocalepopup within Spanish if selected Spanish ',
         (tester) async {
-      await tester.pumpApp(
-        ProviderScope(
-          overrides: [
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
-            appBoxProvider.overrideWithValue(appBox),
-          ],
-          child: const Scaffold(
-            body: AppLocalePopUp(),
+      tester.view.physicalSize = const Size(1125, 1800);
+      final translation = AppLocale.en.buildSync();
+      final container = ProviderContainer(
+        overrides: [
+          enableInternetCheckerPod.overrideWith(
+            (ref) => false,
           ),
-        ),
+          appBoxProvider.overrideWithValue(appBox),
+          translationsPod.overrideWith(
+            (ref) => translation,
+          )
+        ],
       );
-      expect(find.byType(AppLocalePopUp), findsOneWidget);
-      await tester.runAsync(() async {
-        await tester.tap(find.byIcon(Icons.translate));
-        await tester.pumpAndSettle();
-      });
-      expect(
-          find.widgetWithText(
-            SelectedLocaleItem,
-            'English',
-            skipOffstage: false,
-          ),
-          findsOneWidget);
-      await tester.runAsync(() async {
-        await tester.tap(find.text('Spanish'));
-      });
+      await tester.pumpApp(
+        child: const Scaffold(
+          body: AppLocalePopUp(),
+        ),
+        container: container,
+      );
       await tester.pumpAndSettle();
-      await tester.runAsync(() async {
-        await tester.tap(find.byIcon(Icons.translate));
-        await tester.pumpAndSettle();
-      });
-      expect(
-          find.widgetWithText(
-            SelectedLocaleItem,
-            'Spanish',
-            skipOffstage: false,
-          ),
-          findsOneWidget);
-      expect(
-          find.widgetWithText(
-            UnselectedLocaleItem,
-            'English',
-            skipOffstage: false,
-          ),
-          findsOneWidget);
+      spot<AppLocalePopUp>().existsAtLeastOnce();
+      await act.tap(spotIcon(Icons.arrow_drop_down));
+      spot<SelectedLocaleItem>().spotText("English").existsAtLeastOnce();
+      final spanishitem = spot<UnselectedLocaleItem>().spotText("Spanish");
+      spanishitem.existsAtLeastOnce();
+
+      await tester.pumpAndSettle();
+
+      await act.tap(spanishitem);
+
+      await tester.pumpAndSettle();
+
+      spotText("Spanish").existsAtLeastOnce();
+      spotText("English").doesNotExist();
+
+      await tester.pumpAndSettle();
+
+      await act.tap(spotIcon(Icons.arrow_drop_down));
+      await tester.pumpAndSettle();
+      spot<SelectedLocaleItem>().spotText("Spanish").existsAtLeastOnce();
     });
   });
 }

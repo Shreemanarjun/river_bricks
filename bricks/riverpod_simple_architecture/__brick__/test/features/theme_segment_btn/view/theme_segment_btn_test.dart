@@ -6,13 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/core/theme/app_theme.dart';
-import 'package:{{project_name.snakeCase()}}/core/theme/theme_controller.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
 import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/controller/selection_theme_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/theme_segmented_btn.dart';
-import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
+
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
 import '../../../helpers/helpers.dart';
 
@@ -32,20 +32,22 @@ void main() {
       testWidgets(
         'renderes ThemeSegmentBtn',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith(
+                (ref) => translation,
+              )
             ],
           );
           addTearDown(container.dispose);
           await tester.pumpApp(
-            UncontrolledProviderScope(
-              container: container,
-              child: const CounterView(),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -54,20 +56,20 @@ void main() {
       testWidgets(
         'renderes ThemeSefementBtn with ThemeMode.System at Intial',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith((ref) => translation),
             ],
           );
           addTearDown(container.dispose);
           await tester.pumpApp(
-            UncontrolledProviderScope(
-              container: container,
-              child: const CounterView(),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -79,28 +81,21 @@ void main() {
       testWidgets(
         'renderes ThemeSefementBtn with ThemeMode.light on select light mode',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith((ref) => translation),
             ],
           );
           addTearDown(container.dispose);
-          final currentTheme = container.read(themecontrollerProvider);
+
           await tester.pumpApp(
-            ProviderScope(
-              parent: container,
-              child: MaterialApp(
-                theme: Themes.theme,
-                darkTheme: Themes.darkTheme,
-                themeMode: currentTheme,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                home: const CounterView(),
-              ),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -121,28 +116,21 @@ void main() {
       testWidgets(
         'renderes ThemeSefementBtn with ThemeMode.dark on select dark mode',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith((ref) => translation),
             ],
           );
           addTearDown(container.dispose);
-          final currentTheme = container.read(themecontrollerProvider);
+
           await tester.pumpApp(
-            ProviderScope(
-              parent: container,
-              child: MaterialApp(
-                theme: Themes.theme,
-                darkTheme: Themes.darkTheme,
-                themeMode: currentTheme,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                home: const CounterView(),
-              ),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -160,28 +148,23 @@ void main() {
       testWidgets(
         'renderes ThemeSegementBtn with ThemeMode.system after change from dark mode to system mode',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith(
+                (ref) => translation,
+              )
             ],
           );
           addTearDown(container.dispose);
-          final currentTheme = container.read(themecontrollerProvider);
+
           await tester.pumpApp(
-            ProviderScope(
-              parent: container,
-              child: MaterialApp(
-                theme: Themes.theme,
-                darkTheme: Themes.darkTheme,
-                themeMode: currentTheme,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                home: const CounterView(),
-              ),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -212,28 +195,23 @@ void main() {
       testWidgets(
         'renderes ThemeSegementBtn with ThemeMode.system after change from light mode to system mode',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith(
+                (ref) => translation,
+              )
             ],
           );
           addTearDown(container.dispose);
-          final currentTheme = container.read(themecontrollerProvider);
+
           await tester.pumpApp(
-            ProviderScope(
-              parent: container,
-              child: MaterialApp(
-                theme: Themes.theme,
-                darkTheme: Themes.darkTheme,
-                themeMode: currentTheme,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                home: const CounterView(),
-              ),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);
@@ -264,28 +242,23 @@ void main() {
       testWidgets(
         'renderes ThemeSegementBtn with ThemeMode.dark after change from light mode to dark mode',
         (tester) async {
+          final translation = AppLocale.en.buildSync();
           final container = ProviderContainer(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
               ),
               appBoxProvider.overrideWithValue(appBox),
+              translationsPod.overrideWith(
+                (ref) => translation,
+              )
             ],
           );
           addTearDown(container.dispose);
-          final currentTheme = container.read(themecontrollerProvider);
+
           await tester.pumpApp(
-            ProviderScope(
-              parent: container,
-              child: MaterialApp(
-                theme: Themes.theme,
-                darkTheme: Themes.darkTheme,
-                themeMode: currentTheme,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                home: const CounterView(),
-              ),
-            ),
+            child: const CounterView(),
+            container: container,
           );
           await tester.pumpAndSettle();
           expect(find.byType(ThemeSegmentedBtn), findsOneWidget);

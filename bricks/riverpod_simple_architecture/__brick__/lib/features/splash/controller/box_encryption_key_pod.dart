@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage_x/flutter_secure_storage_x.dart';
+
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 final boxEncryptionKeyPod = FutureProvider.autoDispose<Uint8List>((ref) async {
   const secureStorage = FlutterSecureStorage(
       aOptions: AndroidOptions(
-        encryptedSharedPreferences: true,
+        dataStore: true,
       ),
       iOptions: IOSOptions(
         accessibility: KeychainAccessibility.first_unlock,

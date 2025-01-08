@@ -3,16 +3,17 @@
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:{{project_name.snakeCase()}}/core/router/auto_route_observer.dart';
 import 'package:{{project_name.snakeCase()}}/core/router/router_pod.dart';
 import 'package:{{project_name.snakeCase()}}/core/theme/app_theme.dart';
 import 'package:{{project_name.snakeCase()}}/core/theme/theme_controller.dart';
-import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
+import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
 import 'package:{{project_name.snakeCase()}}/shared/helper/global_helper.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/locale_pod.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/responsive_wrapper.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
 ///This class holds Material App or Cupertino App
 ///with routing,theming and locale setup .
@@ -30,9 +31,9 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
   Widget build(BuildContext context) {
     final approuter = ref.watch(autorouterProvider);
     final currentTheme = ref.watch(themecontrollerProvider);
-    final locale = ref.watch(localePod);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      //TODO: change app name
       title: '{{project_name.snakeCase()}} App',
       theme: Themes.theme,
       darkTheme: Themes.darkTheme,
@@ -43,9 +44,9 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
           RouterObserver(),
         ],
       ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: locale,
+      locale: ref.watch(translationsPod).$meta.locale.flutterLocale,
+      supportedLocales: AppLocaleUtils.supportedLocales,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       builder: (context, child) {
         if (mounted) {
           ///Used for responsive design

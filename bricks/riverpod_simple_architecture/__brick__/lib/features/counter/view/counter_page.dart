@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/theme_segmented_btn.dart';
-import 'package:{{project_name.snakeCase()}}/l10n/l10n.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
+import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
 @RoutePage(
   deferredLoading: true,
@@ -70,13 +70,13 @@ class CounterView extends StatelessWidget {
   }
 }
 
-class CounterAppBarTitle extends StatelessWidget {
+class CounterAppBarTitle extends ConsumerWidget {
   const CounterAppBarTitle({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Text(l10n.counterAppBarTitle);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = ref.watch(translationsPod);
+    return Text(t.counterAppBarTitle);
   }
 }
 
