@@ -1,3 +1,7 @@
+# 2.0.25+25
+- Fix dependency adding
+- added default project name in 
+
 # 2.0.24+24
 - Migrated to slang for localization
 - Fix tests for internet checker
