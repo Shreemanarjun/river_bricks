@@ -1,3 +1,11 @@
+# 2.0.27+27
+-Improved Pre-Generation Script:
+The pre-generation script now prompts the user to specify the project name.
+If the user leaves the input empty, the script automatically uses the default project name from pubspec.yaml.
+A hint is provided in the prompt message to guide the user.
+
+- Fix `spot` version (semantic problem on pub add)
+
 # 2.0.26+26
 - Improved pre gen with auto filling project name
 - fix `spot` dependency not added to dev_dependencies
