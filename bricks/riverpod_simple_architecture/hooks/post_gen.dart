@@ -27,8 +27,8 @@ void run(HookContext context) async {
     "platform_info",
     "responsive_framework:{'git':{'url':'https://github.com/Shreemanarjun/ResponsiveFramework.git'}}",
     "slang",
-    "slang_flutter"
-        "talker_dio_logger",
+    "slang_flutter",
+    "talker_dio_logger",
     "talker_flutter",
     "talker_riverpod_logger",
     "velocity_x:{'git':{'url':'https://github.com/Shreemanarjun/VelocityX.git'}}",
@@ -55,8 +55,8 @@ void run(HookContext context) async {
     "mocktail",
     "riverpod_lint",
     "riverpod_test",
-    "slang_build_runner"
-        "very_good_analysis",
+    "slang_build_runner",
+    "very_good_analysis",
   ];
   try {
     await Process.run(
