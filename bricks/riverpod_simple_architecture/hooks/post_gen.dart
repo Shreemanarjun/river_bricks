@@ -56,7 +56,7 @@ void run(HookContext context) async {
     "riverpod_lint",
     "riverpod_test",
     "slang_build_runner",
-    "spot",
+    "spot: ^0.17.0",
     "very_good_analysis",
   ];
   try {

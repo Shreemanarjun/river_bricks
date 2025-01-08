@@ -1,6 +1,10 @@
+# 2.0.26+26
+- Improved pre gen with auto filling project name
+- fix `spot` dependency not added to dev_dependencies
+
 # 2.0.25+25
 - Fix dependency adding
-- added default project name in 
+- added default project name in
 
 # 2.0.24+24
 - Migrated to slang for localization
