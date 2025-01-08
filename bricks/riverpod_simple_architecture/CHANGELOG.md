@@ -1,3 +1,6 @@
+# 2.0.28+28
+- Fix unused import in `no_internet_widget_test.dart`
+
 # 2.0.27+27
 -Improved Pre-Generation Script:
 The pre-generation script now prompts the user to specify the project name.

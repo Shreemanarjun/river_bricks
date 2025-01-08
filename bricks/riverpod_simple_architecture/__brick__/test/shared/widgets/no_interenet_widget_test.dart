@@ -13,8 +13,6 @@ import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
 import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
-import 'package:spot/spot.dart';
-import 'package:velocity_x/velocity_x.dart';
 import '../../helpers/pump_app.dart';
 
 class TestInternetStatusNotifier
