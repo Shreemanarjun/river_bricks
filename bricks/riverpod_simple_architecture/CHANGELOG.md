@@ -1,3 +1,21 @@
+# 2.0.33
+- Fix error installing dependency `riverpod_test`
+
+
+# 2.0.32
+- Fix error removeing dependency `custom_lint` and `riverpod_lint`
+
+# 2.0.31
+- Fix error installing dependency `riverpod_test`
+
+# 2.0.30
+- Upgrade version
+
+
+# 2.0.29
+- Fix error installing dependency `riverpod_test`
+
+
 # 2.0.28+28
 - Fix unused import in `no_internet_widget_test.dart`
 

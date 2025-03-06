@@ -50,11 +50,9 @@ void run(HookContext context) async {
   final devdeps = <String>[
     "auto_route_generator",
     "build_runner",
-    "custom_lint",
     "flutter_lints",
     "mocktail",
-    "riverpod_lint",
-    "riverpod_test",
+    "riverpod_test: 0.1.4",
     "slang_build_runner",
     "spot: ^0.17.0",
     "very_good_analysis",
