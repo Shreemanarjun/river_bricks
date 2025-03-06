@@ -1,4 +1,4 @@
 Hello {{project_name.snakeCase()}}!
 
-Made using riverpod_simple_architecture v2.0.33.
+Made using riverpod_simple_architecture v2.1.0.
 

@@ -1,3 +1,11 @@
+# 2.1.0
+- ✨ **Enhanced Error Handling:** Improved error handling across the architecture, providing more robust and informative error messages and recovery mechanisms.
+- ✨ **Dependency Management Refinements:** Addressed and resolved several dependency-related issues, ensuring better stability and compatibility within the project. This includes:
+    - Updated dependency constraints to be more specific and reliable.
+    - Fixed potential conflicts between dependencies.
+    - Resolved issues related to incorrect or missing dependency installations.
+    - dependency `spot` updated version
+
 # 2.0.33
 - Fix error installing dependency `riverpod_test`
 
