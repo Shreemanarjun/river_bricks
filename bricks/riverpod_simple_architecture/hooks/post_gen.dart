@@ -1,8 +1,23 @@
 import 'dart:io';
 
 import 'package:mason/mason.dart';
-//remove url_launcher
-// import 'package:url_launcher/url_launcher.dart'; // Removed url_launcher
+
+// Function to launch a URL based on the operating system
+Future<void> _launchURL(String url, HookContext context) async {
+  try {
+    if (Platform.isMacOS) {
+      await Process.run('open', [url]);
+    } else if (Platform.isLinux) {
+      await Process.run('xdg-open', [url]);
+    } else if (Platform.isWindows) {
+      await Process.run('start', [url], runInShell: true);
+    } else {
+      context.logger.err("Unsupported platform for opening URL.");
+    }
+  } catch (e) {
+    context.logger.err("Could not launch the URL: $e");
+  }
+}
 
 void run(HookContext context) async {
   context.logger.info('Post generation started');
@@ -288,20 +303,19 @@ void run(HookContext context) async {
       \n 🌐🚫 Ensure responsiveness across devices with responsive_framework.\n 📱💻 And use talker_flutter for logging and debugging.
       \n 🗣️🐛 Keep up the great work! Happy coding! 💻✨
       \n Please uncomment custom lint option in analysis_options.yaml to enable riverpod lint
-      \n\n Love Flutter from Shreeman Arjun! do visit https://shreeman.dev ❤️git 🔥\n\n""");
-  // Launch the URL after the message
-  final url = "https://pub.dev/publishers/shreeman.dev/packages";
-  try {
-    if (Platform.isMacOS) {
-      await Process.run('open', [url]);
-    } else if (Platform.isLinux) {
-      await Process.run('xdg-open', [url]);
-    } else if (Platform.isWindows) {
-      await Process.run('start', [url], runInShell: true);
-    } else {
-      context.logger.err("Unsupported platform for opening URL.");
-    }
-  } catch (e) {
-    context.logger.err("Could not launch the URL: $e");
+      \n\n Love Flutter from Shreeman Arjun! do visit https://shreeman.dev ❤️🔥\n\n""");
+  // Ask the user if they want to check other packages or visit shreeman.dev
+  final checkOtherPackages = context.logger.confirm(
+    'Do you want to check other packages on pub.dev or visit shreeman.dev?',
+    defaultValue: true,
+  );
+
+  if (checkOtherPackages) {
+    // Launch the URL for other packages on pub.dev
+    await _launchURL(
+        "https://pub.dev/publishers/shreeman.dev/packages", context);
+  } else {
+    // Launch the URL for shreeman.dev
+    await _launchURL("https://shreeman.dev", context);
   }
 }
