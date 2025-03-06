@@ -34,15 +34,25 @@ void run(HookContext context) async {
     "velocity_x:{'git':{'url':'https://github.com/Shreemanarjun/VelocityX.git'}}",
   ];
   try {
-    await Process.run(
+    final result = await Process.run(
       'dart',
       ['pub', 'add', ...deps],
       runInShell: true,
     );
-    depprogress.complete("All general dependencies added");
+    // Check if the process ran successfully
+    if (result.exitCode == 0) {
+      depprogress.complete("All general dependencies added");
+    } else {
+      depprogress.update(
+          "Failed to add dependencies with exit code: ${result.exitCode}");
+      depprogress.update("Standard output: ${result.stdout}");
+      depprogress.fail("Standard error: ${result.stderr}");
+      return; // Exit early if dependency addition fails
+    }
   } catch (e) {
     depprogress.cancel();
     depprogress.fail(e.toString());
+    return; // Exit early if dependency addition fails
   }
   final devdepprogress = context.logger.progress('Installing dev dependencies');
 
@@ -50,68 +60,106 @@ void run(HookContext context) async {
   final devdeps = <String>[
     "auto_route_generator",
     "build_runner",
+    "custom_lint",
     "flutter_lints",
     "mocktail",
-    "riverpod_test: 0.1.4",
+    "riverpod_lint",
+    "riverpod_test",
     "slang_build_runner",
-    "spot: ^0.17.0",
+    "spot",
     "very_good_analysis",
   ];
   try {
-    await Process.run(
+    final result = await Process.run(
       'dart',
       ['pub', 'add', '--dev', ...devdeps],
       runInShell: true,
     );
-    devdepprogress.complete("All dev dependencies added");
+    if (result.exitCode == 0) {
+      devdepprogress.complete("All dev dependencies added");
+    } else {
+      devdepprogress.update(
+          "Failed to add dependencies with exit code: ${result.exitCode}");
+      devdepprogress.update("Standard output: ${result.stdout}");
+      devdepprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     devdepprogress.cancel();
     devdepprogress.fail(e.toString());
+    return;
   }
   final packageprogress =
       context.logger.progress('Installing flutter packages');
 
   /// Run `flutter packages get` after generation.
   try {
-    await Process.run(
+    final result = await Process.run(
       'flutter',
       ['packages', 'get'],
       runInShell: true,
     );
-    packageprogress.complete("Got all flutter packages");
+    if (result.exitCode == 0) {
+      packageprogress.complete("Got all flutter packages");
+    } else {
+      packageprogress
+          .update("Failed to get packages with exit code: ${result.exitCode}");
+      packageprogress.update("Standard output: ${result.stdout}");
+      packageprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     packageprogress.cancel();
     packageprogress.fail(e.toString());
+    return;
   }
 
   /// Run `flutter pub get` after generation.
   final additionalpackageprogress =
       context.logger.progress('Installing dart packages');
   try {
-    await Process.run(
+    final result = await Process.run(
       'dart',
       ['pub', 'get'],
       runInShell: true,
     );
-    additionalpackageprogress.complete("Got dart packages");
+    if (result.exitCode == 0) {
+      additionalpackageprogress.complete("Got dart packages");
+    } else {
+      additionalpackageprogress
+          .update("Failed to get packages with exit code: ${result.exitCode}");
+      additionalpackageprogress.update("Standard output: ${result.stdout}");
+      additionalpackageprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     additionalpackageprogress.cancel();
     additionalpackageprogress.fail(e.toString());
+    return;
   }
 
   /// Run `Remove flutter_gen` after generation.
   final fluttergenprogress =
       context.logger.progress('Removing conflicting packages');
   try {
-    await Process.run(
+    final result = await Process.run(
       'dart',
       ['pub', 'remove', 'flutter_gen'],
       runInShell: true,
     );
-    fluttergenprogress.complete("Removed conflicting packages");
+    if (result.exitCode == 0) {
+      fluttergenprogress.complete("Removed conflicting packages");
+    } else {
+      fluttergenprogress.update(
+          "Failed to remove packages with exit code: ${result.exitCode}");
+      fluttergenprogress.update("Standard output: ${result.stdout}");
+      fluttergenprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     fluttergenprogress.cancel();
     fluttergenprogress.fail(e.toString());
+    return;
   }
 
   /// Run `flutter pub run build_runner` after generation.
@@ -119,30 +167,48 @@ void run(HookContext context) async {
       context.logger.progress('Generating localization and routes ');
 
   try {
-    await Process.run(
+    final result = await Process.run(
       'flutter',
       ['pub', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'],
       runInShell: true,
     );
-    codegenprogress.complete();
+    if (result.exitCode == 0) {
+      codegenprogress.complete();
+    } else {
+      codegenprogress.update(
+          "Failed to run build_runner with exit code: ${result.exitCode}");
+      codegenprogress.update("Standard output: ${result.stdout}");
+      codegenprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     codegenprogress.cancel();
     codegenprogress.fail(e.toString());
+    return;
   }
 
   /// Run `flutter pub get` after generation.
   final lpackageprogress =
       context.logger.progress('Checking updation of pubspec');
   try {
-    await Process.run(
+    final result = await Process.run(
       'dart',
       ['pub', 'get'],
       runInShell: true,
     );
-    lpackageprogress.complete("pubspec updation compelete");
+    if (result.exitCode == 0) {
+      lpackageprogress.complete("pubspec updation compelete");
+    } else {
+      lpackageprogress
+          .update("Failed to get packages with exit code: ${result.exitCode}");
+      lpackageprogress.update("Standard output: ${result.stdout}");
+      lpackageprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     lpackageprogress.cancel();
     additionalpackageprogress.fail(e.toString());
+    return;
   }
   context.logger.info('Post generation completed');
 
@@ -165,29 +231,47 @@ void run(HookContext context) async {
   final masonpackageupgrade = context.logger.progress('Upgrading mason');
 
   try {
-    await Process.run(
+    final result = await Process.run(
       'mason',
       ['upgrade', '-g'],
       runInShell: true,
     );
-    masonpackageupgrade.complete("Upgraded mason");
+    if (result.exitCode == 0) {
+      masonpackageupgrade.complete("Upgraded mason");
+    } else {
+      masonpackageupgrade
+          .update("Failed to upgrade mason with exit code: ${result.exitCode}");
+      masonpackageupgrade.update("Standard output: ${result.stdout}");
+      masonpackageupgrade.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     masonpackageupgrade.cancel();
     masonpackageupgrade.fail(e.toString());
+    return;
   }
 
   /// Run `Remove flutter_gen` after generation.
   final coverageprogress = context.logger.progress('Generating coverage');
   try {
-    await Process.run(
+    final result = await Process.run(
       'flutter',
       ['test', '--coverage'],
       runInShell: true,
     );
-    coverageprogress.complete("Coverage file generate");
+    if (result.exitCode == 0) {
+      coverageprogress.complete("Coverage file generate");
+    } else {
+      coverageprogress.update(
+          "Failed to generate coverage with exit code: ${result.exitCode}");
+      coverageprogress.update("Standard output: ${result.stdout}");
+      coverageprogress.fail("Standard error: ${result.stderr}");
+      return;
+    }
   } catch (e) {
     coverageprogress.cancel();
     coverageprogress.fail(e.toString());
+    return;
   }
   //flutter test --coverage
   context.logger.info(
