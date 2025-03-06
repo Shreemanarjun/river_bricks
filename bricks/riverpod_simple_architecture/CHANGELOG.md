@@ -1,6 +1,8 @@
+# 2.1.3
+- Fix heading
+
 # 2.1.2
 - Fix links
-
 
 # 2.1.1
 - ✨ **Architecture Documentation:** Added comprehensive architecture documentation ([architecture/architecture.md](__brick__/architecture/architecture.md)) detailing the feature-first approach, layer responsibilities, and usage of Riverpod, AutoRoute, and other libraries.
