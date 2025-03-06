@@ -1,3 +1,8 @@
+# 2.1.1
+- ✨ **Architecture Documentation:** Added comprehensive architecture documentation ([architecture/architecture.md](__brick__/architecture/architecture.md)) detailing the feature-first approach, layer responsibilities, and usage of Riverpod, AutoRoute, and other libraries.
+- ✨ **README Enhancement:** Updated the README to include a reference to the architecture documentation, making it easily accessible to users.
+
+
 # 2.1.0
 - ✨ **Enhanced Error Handling:** Improved error handling across the architecture, providing more robust and informative error messages and recovery mechanisms.
 - ✨ **Dependency Management Refinements:** Addressed and resolved several dependency-related issues, ensuring better stability and compatibility within the project. This includes:
