@@ -1,3 +1,6 @@
+# 2.1.4
+- Fix responsive framework mobile size
+-
 # 2.1.3
 - Fix heading
 
