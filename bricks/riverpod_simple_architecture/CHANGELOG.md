@@ -1,3 +1,7 @@
+# 2.1.5
+- Fixed dependency erro of velocityx for intl.
+
+
 # 2.1.4
 - Fix responsive framework mobile size
 -
