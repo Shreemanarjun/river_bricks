@@ -47,8 +47,8 @@ void run(HookContext context) async {
     "slang_flutter",
     "talker_dio_logger",
     "talker_flutter",
-    "talker_riverpod_logger",
-    "velocity_x:{'git':{'url':'https://github.com/Shreemanarjun/VelocityX.git','ref': 'stable'}}",
+ 
+
   ];
   try {
     final result = await Process.run(
@@ -81,7 +81,6 @@ void run(HookContext context) async {
     "flutter_lints",
     "mocktail",
     "riverpod_lint",
-    "riverpod_test",
     "slang_build_runner",
     "spot",
     "very_good_analysis",

@@ -1,3 +1,4 @@
+import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer/riverpod_obs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
@@ -8,8 +9,6 @@ import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
 import 'package:{{project_name.snakeCase()}}/features/splash/controller/box_encryption_key_pod.dart';
 import 'package:{{project_name.snakeCase()}}/init.dart';
-
-import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
 final futureInitializerPod =
     FutureProvider.autoDispose<ProviderContainer>((ref) async {

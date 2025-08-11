@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/dio_client_provider.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 ///No internet extension widget
 extension NoInternet on Widget {
@@ -38,7 +37,7 @@ class ConnectionMonitor extends StatelessWidget {
               right: 0.0,
               top: 0.0,
               child: AnimatedSize(
-                duration: 900.milliseconds,
+                duration: Duration(milliseconds: 900),
                 curve: Curves.fastOutSlowIn,
                 alignment: Alignment.topCenter,
                 child: DefaultNoInternetWidget(
@@ -100,7 +99,8 @@ class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
           alignment: Alignment.topCenter,
           heightFactor: status == InternetStatus.disconnected ? 1.0 : 0.0,
           child: status == InternetStatus.disconnected
-              ? ((widget.noInternetWidget) ??
+              ? SafeArea(
+                  child: ((widget.noInternetWidget) ??
                       MaterialBanner(
                         content: const Text(
                           'No Internet Available',
@@ -119,20 +119,33 @@ class _DefaultNoInternetState extends ConsumerState<DefaultNoInternetWidget> {
                             ),
                           ),
                         ],
-                      ))
-                  .safeArea()
+                      )),
+                )
               : const SizedBox.shrink(),
         );
       },
       error: (error, stackTrace) => Row(
         children: [
-          "$error".text.red500.make().expand(),
-          ElevatedButton(
-            onPressed: () {
-              ref.invalidate(internetCheckerNotifierPod);
-            },
-            child: const Text('Retry').text.red500.make(),
-          ).flexible(),
+          Expanded(
+            child: Text(
+              "$error",
+              style: const TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+          Flexible(
+            child: ElevatedButton(
+                onPressed: () {
+                  ref.invalidate(internetCheckerNotifierPod);
+                },
+                child: const Text(
+                  'Retry',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                )),
+          ),
         ],
       ),
       loading: () => const LinearProgressIndicator(),

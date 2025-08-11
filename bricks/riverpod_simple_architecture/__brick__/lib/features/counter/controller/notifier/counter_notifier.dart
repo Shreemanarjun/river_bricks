@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
 
 /// This notifier class used to build intial value
 /// from intial counter value which can be overriden.
@@ -7,7 +6,7 @@ import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
 class CounterNotifier extends Notifier<int> {
   @override
   int build() {
-    return ref.read(intialCounterValuePod);
+    return 0;
   }
 
   ///This function updates current state increase by 1

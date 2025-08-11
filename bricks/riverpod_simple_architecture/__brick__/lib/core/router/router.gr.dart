@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -16,20 +17,14 @@ import 'package:{{project_name.snakeCase()}}/features/counter/view/counter_page.
 /// [_i1.CounterPage]
 class CounterRoute extends _i2.PageRouteInfo<void> {
   const CounterRoute({List<_i2.PageRouteInfo>? children})
-      : super(
-          CounterRoute.name,
-          initialChildren: children,
-        );
+      : super(CounterRoute.name, initialChildren: children);
 
   static const String name = 'CounterRoute';
 
   static _i2.PageInfo page = _i2.PageInfo(
     name,
     builder: (data) {
-      return _i2.DeferredWidget(
-        _i1.loadLibrary,
-        () => _i1.CounterPage(),
-      );
+      return _i2.DeferredWidget(_i1.loadLibrary, () => _i1.CounterPage());
     },
   );
 }
