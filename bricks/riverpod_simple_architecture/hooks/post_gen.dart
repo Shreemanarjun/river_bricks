@@ -47,8 +47,6 @@ void run(HookContext context) async {
     "slang_flutter",
     "talker_dio_logger",
     "talker_flutter",
-
-
   ];
   try {
     final result = await Process.run(
@@ -303,18 +301,34 @@ void run(HookContext context) async {
       \n 🗣️🐛 Keep up the great work! Happy coding! 💻✨
       \n Please uncomment custom lint option in analysis_options.yaml to enable riverpod lint
       \n\n Love Flutter from Shreeman Arjun! do visit https://shreeman.dev ❤️🔥\n\n""");
+
   // Ask the user if they want to check other packages or visit shreeman.dev
-  final checkOtherPackages = context.logger.confirm(
+  final checkOtherPackages = context.logger.chooseOne<VisitOnComplete>(
     'Do you want to check other packages on pub.dev or visit shreeman.dev?',
-    defaultValue: true,
+    choices: [
+      VisitOnComplete.website,
+      VisitOnComplete.pub,
+      VisitOnComplete.no,
+    ],
+    defaultValue: VisitOnComplete.no,
+    display: (choice) => choice.message,
   );
 
-  if (checkOtherPackages) {
-    // Launch the URL for other packages on pub.dev
-    await _launchURL(
-        "https://pub.dev/publishers/shreeman.dev/packages", context);
-  } else {
-    // Launch the URL for shreeman.dev
-    await _launchURL("https://shreeman.dev", context);
-  }
+  return switch (checkOtherPackages) {
+    VisitOnComplete.website =>
+      await _launchURL("https://shreeman.dev", context),
+    VisitOnComplete.pub => // Launch the URL for other packages on pub.dev
+      await _launchURL(
+          "https://pub.dev/publishers/shreeman.dev/packages", context),
+    VisitOnComplete.no => "Wow!!!",
+  };
+}
+
+enum VisitOnComplete {
+  pub("Yes, check other packages on pub.dev"),
+  website("Yes, visit shreeman.dev"),
+  no("No, thanks!");
+
+  final String message;
+  const VisitOnComplete(this.message);
 }
