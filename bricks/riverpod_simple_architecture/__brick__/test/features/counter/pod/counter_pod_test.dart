@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/features/counter/counter.dart';
+import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
 
 abstract class MyAbstract {}
 

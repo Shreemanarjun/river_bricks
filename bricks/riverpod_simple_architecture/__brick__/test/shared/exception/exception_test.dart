@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/shared/exception/base_exception.dart';
+import 'package:{{project_name.snakeCase()}}/shared/exception/base_exception.dart';
 
 void main() {
   group('APIException', () {

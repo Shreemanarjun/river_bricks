@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/init.dart';
+import 'package:{{project_name.snakeCase()}}/init.dart';
 
 Future<void> main() async {
   group(

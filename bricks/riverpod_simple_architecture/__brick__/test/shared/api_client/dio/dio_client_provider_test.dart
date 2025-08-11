@@ -1,10 +1,10 @@
 import 'package:dio/io.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/shared/api_client/dio/default_api_interceptor.dart';
-import 'package:example/shared/api_client/dio/default_time_response_interceptor.dart';
-import 'package:example/shared/api_client/dio/dio_client_provider.dart';
-import 'package:example/shared/api_client/dio/form_data_interceptor.dart';
+import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/default_api_interceptor.dart';
+import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/default_time_response_interceptor.dart';
+import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/dio_client_provider.dart';
+import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/form_data_interceptor.dart';
 
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 

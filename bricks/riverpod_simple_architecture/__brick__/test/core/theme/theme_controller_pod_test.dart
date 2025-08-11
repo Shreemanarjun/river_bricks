@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:example/core/local_storage/app_storage.dart';
-import 'package:example/core/local_storage/app_storage_pod.dart';
-import 'package:example/core/theme/theme_controller.dart';
+import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage.dart';
+import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
+import 'package:{{project_name.snakeCase()}}/core/theme/theme_controller.dart';
 
 void main() {
   group('ThemeModeController Test', () {

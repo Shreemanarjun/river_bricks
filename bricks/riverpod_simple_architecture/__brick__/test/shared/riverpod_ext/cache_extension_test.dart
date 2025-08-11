@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:example/shared/riverpod_ext/cache_extensions.dart';
+import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/cache_extensions.dart';
 
 final cacheStateProvider = StateProvider.autoDispose<int>((ref) {
   ref.cacheFor(const Duration(seconds: 3));
