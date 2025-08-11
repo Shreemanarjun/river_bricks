@@ -1,3 +1,26 @@
+# 2.2.0
+
+This release focuses on significant core refactoring, dependency cleanup, and code quality improvements for a more robust and maintainable foundation.
+
+### 🚀 Features & Enhancements
+
+*   **🎨 Persistent Theme Controller**: Upgraded the theme controller from `AutoDisposeNotifier` to `Notifier`. This ensures your selected theme persists throughout the app's lifecycle and isn't reset when UI components are rebuilt.
+*   **📡 Reliable Internet Checker**: The internet connectivity provider now uses `StreamNotifier` instead of `AutoDisposeStreamNotifier`. This guarantees a continuous and stable stream of connectivity status, crucial for global features like the "No Internet" widget.
+*   **🏗️ Native Flutter UI**: Replaced the `velocity_x` package with native Flutter widgets. This reduces external dependencies, providing more control and stability over the UI components.
+*   **Riverpod v3 Support**: Upgraded all Riverpod-related packages to `^3.0.0-dev.17` to support the latest features and improvements from the upcoming Riverpod v3 release.
+
+### ♻️ Refactoring & Code Quality
+
+*   **✍️ Code Formatting**: Standardized Dart code line width to 80 characters for better readability and consistency across the project.
+*   **📂 Improved Project Structure**: Relocated the `RiverpodObserver` to its own dedicated folder, improving code organization and maintainability.
+*   **🗑️ Dependency Cleanup**:
+    *   Removed `talker_riverpod_logger` and `riverpod_test` to streamline dependencies and simplify the testing setup.
+    *   Removed the redundant `initialCounterValuePod`, simplifying the state logic for the counter example feature.
+
+### 🐛 Bug Fixes
+
+*   **✅ Splash Screen Logic**: Corrected a conditional check in the splash view to ensure a smoother and more reliable app initialization sequence.
+
 # 2.1.5
 - Fixed dependency erro of velocityx for intl.
 

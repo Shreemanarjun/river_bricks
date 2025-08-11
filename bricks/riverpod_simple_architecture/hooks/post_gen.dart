@@ -35,7 +35,7 @@ void run(HookContext context) async {
     "flex_color_scheme",
     "flutter_displaymode",
     "flutter_secure_storage_x",
-    "flutter_riverpod",
+    "flutter_riverpod:^3.0.0-dev.17",
     "hive_ce_flutter",
     "internet_connection_checker_plus",
     "intl",
@@ -47,7 +47,7 @@ void run(HookContext context) async {
     "slang_flutter",
     "talker_dio_logger",
     "talker_flutter",
- 
+
 
   ];
   try {
@@ -80,7 +80,7 @@ void run(HookContext context) async {
     "custom_lint",
     "flutter_lints",
     "mocktail",
-    "riverpod_lint",
+    "riverpod_lint:^3.0.0-dev.17",
     "slang_build_runner",
     "spot",
     "very_good_analysis",
