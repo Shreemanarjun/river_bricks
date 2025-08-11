@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
-import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/controller/selection_theme_pod.dart';
-import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/theme_segmented_btn.dart';
-import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
+import 'package:example/core/local_storage/app_storage_pod.dart';
+import 'package:example/features/counter/counter.dart';
+import 'package:example/features/theme_segmented_btn/controller/selection_theme_pod.dart';
+import 'package:example/features/theme_segmented_btn/view/theme_segmented_btn.dart';
+import 'package:example/i18n/strings.g.dart';
 
-import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
+import 'package:example/shared/pods/internet_checker_pod.dart';
+import 'package:example/shared/pods/translation_pod.dart';
 
 import '../../../helpers/helpers.dart';
 
@@ -33,7 +33,7 @@ void main() {
         'renderes ThemeSegmentBtn',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -57,7 +57,7 @@ void main() {
         'renderes ThemeSefementBtn with ThemeMode.System at Intial',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -82,7 +82,7 @@ void main() {
         'renderes ThemeSefementBtn with ThemeMode.light on select light mode',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -117,7 +117,7 @@ void main() {
         'renderes ThemeSefementBtn with ThemeMode.dark on select dark mode',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -149,7 +149,7 @@ void main() {
         'renderes ThemeSegementBtn with ThemeMode.system after change from dark mode to system mode',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -196,7 +196,7 @@ void main() {
         'renderes ThemeSegementBtn with ThemeMode.system after change from light mode to system mode',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,
@@ -243,7 +243,7 @@ void main() {
         'renderes ThemeSegementBtn with ThemeMode.dark after change from light mode to dark mode',
         (tester) async {
           final translation = AppLocale.en.buildSync();
-          final container = ProviderContainer(
+          final container = ProviderContainer.test(
             overrides: [
               enableInternetCheckerPod.overrideWith(
                 (ref) => false,

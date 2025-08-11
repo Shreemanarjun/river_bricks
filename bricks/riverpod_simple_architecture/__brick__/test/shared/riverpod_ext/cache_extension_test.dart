@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/cache_extensions.dart';
+import 'package:example/shared/riverpod_ext/cache_extensions.dart';
 
 final cacheStateProvider = StateProvider.autoDispose<int>((ref) {
   ref.cacheFor(const Duration(seconds: 3));
@@ -125,7 +127,7 @@ Future<void> main() async {
     testWidgets(
       "Check cache",
       (tester) async {
-        final providercontainer = ProviderContainer();
+        final providercontainer = ProviderContainer.test();
         await tester.pumpWidget(
           UncontrolledProviderScope(
             container: providercontainer,

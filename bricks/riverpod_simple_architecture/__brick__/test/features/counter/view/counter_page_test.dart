@@ -1,19 +1,20 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:example/features/counter/controller/counter_state_pod.dart';
+import 'package:example/shared/riverpod_ext/riverpod_observer/riverpod_obs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:{{project_name.snakeCase()}}/bootstrap.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/controller/counter_state_pod.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/view/counter_page.dart';
-import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
-import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
+
+import 'package:example/core/local_storage/app_storage_pod.dart';
+import 'package:example/features/counter/view/counter_page.dart';
+import 'package:example/i18n/strings.g.dart';
+import 'package:example/shared/pods/internet_checker_pod.dart';
+
+import 'package:example/shared/pods/translation_pod.dart';
 
 import '../../../helpers/helpers.dart';
 
@@ -32,7 +33,7 @@ void main() {
       final translation = AppLocale.en.buildSync();
       await tester.pumpApp(
         child: const CounterPage(),
-        container: ProviderContainer(
+        container: ProviderContainer.test(
           overrides: [
             enableInternetCheckerPod.overrideWith(
               (ref) => false,
@@ -57,16 +58,18 @@ void main() {
     testWidgets('renders current count', (tester) async {
       const state = 42;
       final translation = AppLocale.en.buildSync();
-      final container = ProviderContainer(
+      final container = ProviderContainer.test(
         overrides: [
           enableInternetCheckerPod.overrideWith(
             (ref) => false,
           ),
           appBoxProvider.overrideWithValue(appBox),
-          intialCounterValuePod.overrideWithValue(state),
+          counterPod.overrideWithBuild(
+            (ref, notifier) => state,
+          ),
           translationsPod.overrideWith((ref) => translation)
         ],
-        observers: [MyObserverLogger(talker: talker)],
+        observers: [TalkerRiverpodObserver()],
       );
       addTearDown(container.dispose);
       await tester.pumpApp(
@@ -84,13 +87,15 @@ void main() {
       final translation = AppLocale.en.buildSync();
       await tester.pumpApp(
         child: const CounterView(),
-        container: ProviderContainer(
+        container: ProviderContainer.test(
           overrides: [
             enableInternetCheckerPod.overrideWith(
               (ref) => false,
             ),
             appBoxProvider.overrideWithValue(appBox),
-            intialCounterValuePod.overrideWithValue(state),
+            counterPod.overrideWithBuild(
+              (ref, notifier) => state,
+            ),
             translationsPod.overrideWith((ref) => translation)
           ],
         ),
@@ -106,13 +111,15 @@ void main() {
         (tester) async {
       const state = 42;
       final translation = AppLocale.en.buildSync();
-      final container = ProviderContainer(
+      final container = ProviderContainer.test(
         overrides: [
           enableInternetCheckerPod.overrideWith(
             (ref) => false,
           ),
           appBoxProvider.overrideWithValue(appBox),
-          intialCounterValuePod.overrideWithValue(state),
+          counterPod.overrideWithBuild(
+            (ref, notifier) => state,
+          ),
           translationsPod.overrideWith((ref) => translation)
         ],
       );

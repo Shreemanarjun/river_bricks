@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
+import 'package:example/shared/pods/internet_checker_pod.dart';
 import 'package:mocktail/mocktail.dart';
 
 class TestInternetConnection extends Mock implements InternetConnection {}
@@ -11,22 +11,36 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('Internet checker test', () {
     test(
+      "Default instance",
+      () {
+        final container = ProviderContainer.test();
+        expect(container.read(internetConnectionCheckerInstancePod), isNotNull);
+        expect(
+            container.read(internetConnectionCheckerInstancePod).checkInterval,
+            equals(Duration(seconds: 5)));
+      },
+    );
+
+    test(
       'if internt checker disabled then by deafult internetstatus should be connected',
       () async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
             enableInternetCheckerPod.overrideWithValue(
               false,
             ),
           ],
         );
-        expect(
-            container.read(internetConnectionCheckerInstancePod).checkInterval,
-            equals(const Duration(seconds: 5)));
-        addTearDown(container.dispose);
+        final sub1 =
+            container.listen(enableInternetCheckerPod, (previous, next) {});
 
-        final status = await container.read(internetCheckerNotifierPod.future);
-        expect(status, InternetStatus.connected);
+        final sub =
+            container.listen(internetCheckerNotifierPod, (previous, next) {});
+
+        expect(await container.read(internetCheckerNotifierPod.future),
+            InternetStatus.connected);
+        sub.close();
+        sub1.close();
       },
     );
     test(
@@ -38,7 +52,7 @@ void main() {
             InternetStatus.connected,
           ),
         );
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
             enableInternetCheckerPod.overrideWithValue(
               true,
@@ -49,9 +63,15 @@ void main() {
         );
 
         addTearDown(container.dispose);
+        final sub1 =
+            container.listen(enableInternetCheckerPod, (previous, next) {});
 
+        final sub =
+            container.listen(internetCheckerNotifierPod, (previous, next) {});
         final status = await container.read(internetCheckerNotifierPod.future);
         expect(status, InternetStatus.connected);
+        sub.close();
+        sub1.close();
       },
     );
 
@@ -67,7 +87,7 @@ void main() {
         when(() => internetConnection.checkInterval).thenAnswer(
           (invocation) => Duration(seconds: 5),
         );
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
             enableInternetCheckerPod.overrideWithValue(
               true,
@@ -77,7 +97,11 @@ void main() {
           ],
         );
         addTearDown(container.dispose);
+        final sub1 =
+            container.listen(enableInternetCheckerPod, (previous, next) {});
 
+        final sub =
+            container.listen(internetCheckerNotifierPod, (previous, next) {});
         var status = await container.read(internetCheckerNotifierPod.future);
         expectLater(
           status,
@@ -96,6 +120,8 @@ void main() {
             .change(status: InternetStatus.disconnected);
         expect(container.read(internetCheckerNotifierPod).requireValue,
             equals(InternetStatus.disconnected));
+        sub.close();
+        sub1.close();
       },
     );
   });

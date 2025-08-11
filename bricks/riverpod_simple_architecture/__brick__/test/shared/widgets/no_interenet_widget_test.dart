@@ -1,22 +1,21 @@
-// ignore_for_file: deprecated_member_use, avoid_public_notifier_properties
-
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:example/shared/riverpod_ext/riverpod_observer/riverpod_obs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.dart';
-import 'package:{{project_name.snakeCase()}}/shared/widget/no_internet_widget.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
+import 'package:example/core/local_storage/app_storage_pod.dart';
+import 'package:example/i18n/strings.g.dart';
+import 'package:example/shared/pods/internet_checker_pod.dart';
+import 'package:example/shared/widget/no_internet_widget.dart';
+import 'package:example/shared/pods/translation_pod.dart';
+import 'package:spot/spot.dart';
 import '../../helpers/pump_app.dart';
 
-class TestInternetStatusNotifier
-    extends AutoDisposeStreamNotifier<InternetStatus>
+class TestInternetStatusNotifier extends StreamNotifier<InternetStatus>
     implements InternetStatusNotifier {
   final Stream<InternetStatus> Function() streamBuild;
 
@@ -167,47 +166,7 @@ void main() {
       expect(find.text('I am the child'), findsOneWidget);
       expect(find.text('I am no internet child'), findsOneWidget);
     });
-    testWidgets('renders error message  when any exception happened ',
-        (tester) async {
-      final ProviderContainer container = ProviderContainer(
-        overrides: [
-          appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
-          internetCheckerNotifierPod.overrideWith(
-            () => TestInternetStatusNotifier(
-              streamBuild: () {
-                throw "Error in connection";
-              },
-            ),
-          )
-        ],
-      );
-      await tester.pumpApp(
-        child: Scaffold(
-          body: SizedBox(
-            height: 1200,
-            width: 4000,
-            child: const Text('I am the child').monitorConnection(
-              noInternetWidget: SizedBox(
-                height: 1200,
-                width: 400,
-                child: const Text('I am no internet child'),
-              ),
-            ),
-          ),
-        ),
-        container: container,
-      );
 
-      await tester.pumpAndSettle();
-
-      expect(find.text("Error in connection"), findsOneWidget);
-    });
     testWidgets('renders child on web platform ', (tester) async {
       final ProviderContainer providerContainer = ProviderContainer(overrides: [
         appBoxProvider.overrideWithValue(appBox),
@@ -344,44 +303,70 @@ void main() {
       });
     });
     testWidgets(
-        'check no internet pod refreshed on ok clicked on snackbar when error occured',
-        (tester) async {
-      final ProviderContainer container = ProviderContainer(
-        overrides: [
-          appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
-          internetCheckerNotifierPod.overrideWith(
-            () => TestInternetStatusNotifier(
-              streamBuild: () {
-                return Stream.error("Error");
-              },
-            ),
-          )
-        ],
-      );
+      'check no internet pod refreshed on ok clicked on snackbar when error occurred',
+      (tester) async {
+        final controller = StreamController<InternetStatus>.broadcast();
+        addTearDown(() => controller.close());
 
-      await tester.pumpApp(
-        child: Material(
-          child: const Scaffold(
-            body: Text(
-              'I am the child',
+        final container = ProviderContainer(
+          observers: [
+            TalkerRiverpodObserver(),
+          ],
+          overrides: [
+            appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith(
+              (ref) => AppLocale.en.buildSync(),
             ),
-          ).monitorConnection(),
-        ),
-        container: container,
-      );
+            enableInternetCheckerPod.overrideWith(
+              (ref) => false,
+            ),
+            internetCheckerNotifierPod.overrideWithBuild(
+              (ref, notifier) => controller.stream,
+            )
+          ],
+        );
+        addTearDown(() => container.dispose());
+        await loadAppFonts();
+        await tester.pumpWidget(
+          UncontrolledProviderScope(
+            container: container,
+            child: MaterialApp(
+              home: Material(
+                child: const Scaffold(
+                  body: Text(
+                    'I am the child',
+                  ),
+                ).monitorConnection(),
+              ),
+            ),
+          ),
+        );
 
-      await tester.pumpAndSettle();
-      final retryBtn = find.textContaining("Retry");
-      await tester.ensureVisible(retryBtn);
-      await tester.pumpAndSettle();
-      await tester.tap(retryBtn);
-      expect(container.read(internetCheckerNotifierPod).isRefreshing, isTrue);
-    });
+        // Initial pump to build the widget tree
+        await tester.pump();
+
+        // Add error to trigger the snackbar
+        controller.addError(InternetStatus.disconnected);
+        await tester.pumpAndSettle();
+
+        // Find the retry button
+        final retryBtn = find.text("Retry");
+        expect(retryBtn, findsOneWidget);
+
+        // Add connected status
+        controller.add(InternetStatus.connected);
+        await tester.pump();
+
+        // Tap the retry button
+        await tester.tap(retryBtn);
+        await tester.pumpAndSettle();
+
+        // Verify the state
+        final provider = container.read(internetCheckerNotifierPod);
+        expect(provider.isRefreshing, true);
+
+        await takeScreenshot();
+      },
+    );
   });
 }

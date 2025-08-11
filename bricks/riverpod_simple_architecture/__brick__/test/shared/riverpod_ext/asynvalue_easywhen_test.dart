@@ -1,14 +1,16 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:example/shared/riverpod_ext/riverpod_observer/riverpod_obs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/i18n/strings.g.dart';
-import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/asynvalue_easy_when.dart';
-import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
+import 'package:example/core/local_storage/app_storage_pod.dart';
+import 'package:example/i18n/strings.g.dart';
+import 'package:example/shared/riverpod_ext/asynvalue_easy_when.dart';
+import 'package:example/shared/pods/translation_pod.dart';
+import 'package:spot/spot.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -40,7 +42,7 @@ void main() {
               },
             ),
           ),
-          container: ProviderContainer(
+          container: ProviderContainer.test(
             overrides: [
               appBoxProvider.overrideWithValue(appBox),
               translationsPod.overrideWith(
@@ -56,15 +58,16 @@ void main() {
     testWidgets(
       'check on error Default error should be rendered',
       (tester) async {
-        final container = ProviderContainer(
-          overrides: [
-            testAsyncValuePod.overrideWith((ref) => throw ""),
-            appBoxProvider.overrideWithValue(appBox),
-            translationsPod.overrideWith(
-              (ref) => AppLocale.en.buildSync(),
-            )
-          ],
-        );
+        final container = ProviderContainer.test(overrides: [
+          appBoxProvider.overrideWithValue(appBox),
+          translationsPod.overrideWith(
+            (ref) => AppLocale.en.buildSync(),
+          ),
+          testAsyncValuePod
+              .overrideWithValue(AsyncError("Error", StackTrace.current)),
+        ], observers: [
+          TalkerRiverpodObserver()
+        ]);
         await tester.pumpApp(
           child: Scaffold(
             body: Consumer(
@@ -85,9 +88,10 @@ void main() {
     testWidgets(
       'check on error custom error should be rendered',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith((ref) => throw "custom error"),
+            testAsyncValuePod.overrideWithValue(
+                AsyncError("custom error", StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -132,7 +136,7 @@ void main() {
               },
             ),
           ),
-          container: ProviderContainer(
+          container: ProviderContainer.test(
             overrides: [
               appBoxProvider.overrideWithValue(appBox),
               translationsPod.overrideWith(
@@ -148,9 +152,10 @@ void main() {
     testWidgets(
       'check isLinear  should render error in row and text should be Try again letter when onRetry is not passed ',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith((ref) => throw "Error"),
+            testAsyncValuePod
+                .overrideWithValue(AsyncError("Error", StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -173,15 +178,17 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(find.byType(Row), findsOneWidget);
+        await takeScreenshot();
         expect(find.text('Try Again later.'), findsOneWidget);
       },
     );
     testWidgets(
       'check isLinear should render error in row ',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith((ref) => throw "Error"),
+            testAsyncValuePod
+                .overrideWithValue(AsyncError("Error", StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -212,9 +219,10 @@ void main() {
     testWidgets(
       'check isLinear should render error in column ',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith((ref) => throw "Error"),
+            testAsyncValuePod
+                .overrideWithValue(AsyncError("Error", StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -243,14 +251,17 @@ void main() {
     testWidgets(
       'check on error Default Dio Error connection timeout should be rendered and with connection time out text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
-                type: DioExceptionType.connectionTimeout,
-                requestOptions: RequestOptions(
-                  path: "/",
+            testAsyncValuePod.overrideWithValue(
+              AsyncError(
+                DioException(
+                  type: DioExceptionType.connectionTimeout,
+                  requestOptions: RequestOptions(
+                    path: "/",
+                  ),
                 ),
+                StackTrace.current,
               ),
             ),
             appBoxProvider.overrideWithValue(appBox),
@@ -281,14 +292,17 @@ void main() {
     testWidgets(
       'check on error Default Dio Error sendTimeout should be rendered and with connection sendTimeout text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
-                type: DioExceptionType.sendTimeout,
-                requestOptions: RequestOptions(
-                  path: "/",
+            testAsyncValuePod.overrideWithValue(
+              AsyncError(
+                DioException(
+                  type: DioExceptionType.sendTimeout,
+                  requestOptions: RequestOptions(
+                    path: "/",
+                  ),
                 ),
+                StackTrace.current,
               ),
             ),
             appBoxProvider.overrideWithValue(appBox),
@@ -322,16 +336,16 @@ void main() {
     testWidgets(
       'check on error Default Dio Error receiveTimeout should be rendered and with connection receiveTimeout text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
-                type: DioExceptionType.receiveTimeout,
-                requestOptions: RequestOptions(
-                  path: "/",
+            testAsyncValuePod.overrideWithValue(AsyncError(
+                DioException(
+                  type: DioExceptionType.receiveTimeout,
+                  requestOptions: RequestOptions(
+                    path: "/",
+                  ),
                 ),
-              ),
-            ),
+                StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -360,16 +374,17 @@ void main() {
     testWidgets(
       'check on error Default Dio Error badCertificate should be rendered and with connection badCertificate text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
+            testAsyncValuePod.overrideWithValue(AsyncError(
+              DioException(
                 type: DioExceptionType.badCertificate,
                 requestOptions: RequestOptions(
                   path: "/",
                 ),
               ),
-            ),
+              StackTrace.current,
+            )),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -399,15 +414,16 @@ void main() {
     testWidgets(
       'check on error Default Dio Error badResponse should be rendered and with connection badResponse text',
       (tester) async {
-        final container = ProviderContainer(overrides: [
-          testAsyncValuePod.overrideWith(
-            (ref) => throw DioException(
+        final container = ProviderContainer.test(overrides: [
+          testAsyncValuePod.overrideWithValue(AsyncError(
+            DioException(
               type: DioExceptionType.badResponse,
               requestOptions: RequestOptions(
                 path: "/",
               ),
             ),
-          ),
+            StackTrace.current,
+          )),
           appBoxProvider.overrideWithValue(appBox),
           translationsPod.overrideWith(
             (ref) => AppLocale.en.buildSync(),
@@ -436,16 +452,16 @@ void main() {
     testWidgets(
       'check on error Default Dio Error cancel should be rendered and with connection cancel text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
-                type: DioExceptionType.cancel,
-                requestOptions: RequestOptions(
-                  path: "/",
+            testAsyncValuePod.overrideWithValue(AsyncError(
+                DioException(
+                  type: DioExceptionType.cancel,
+                  requestOptions: RequestOptions(
+                    path: "/",
+                  ),
                 ),
-              ),
-            ),
+                StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -474,16 +490,16 @@ void main() {
     testWidgets(
       'check on error Default Dio Error connectionError should be rendered and with connectionError text',
       (tester) async {
-        final container = ProviderContainer(
+        final container = ProviderContainer.test(
           overrides: [
-            testAsyncValuePod.overrideWith(
-              (ref) => throw DioException(
-                type: DioExceptionType.connectionError,
-                requestOptions: RequestOptions(
-                  path: "/",
+            testAsyncValuePod.overrideWithValue(AsyncError(
+                DioException(
+                  type: DioExceptionType.connectionError,
+                  requestOptions: RequestOptions(
+                    path: "/",
+                  ),
                 ),
-              ),
-            ),
+                StackTrace.current)),
             appBoxProvider.overrideWithValue(appBox),
             translationsPod.overrideWith(
               (ref) => AppLocale.en.buildSync(),
@@ -513,15 +529,16 @@ void main() {
     testWidgets(
       'check on error Default Dio Error unknown should be rendered and with unknown text',
       (tester) async {
-        final container = ProviderContainer(overrides: [
-          testAsyncValuePod.overrideWith(
-            (ref) => throw DioException(
+        final container = ProviderContainer.test(overrides: [
+          testAsyncValuePod.overrideWithValue(AsyncError(
+            DioException(
               type: DioExceptionType.unknown,
               requestOptions: RequestOptions(
                 path: "/",
               ),
             ),
-          ),
+            StackTrace.current,
+          )),
           appBoxProvider.overrideWithValue(appBox),
           translationsPod.overrideWith(
             (ref) => AppLocale.en.buildSync(),

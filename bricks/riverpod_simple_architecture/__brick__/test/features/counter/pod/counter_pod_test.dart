@@ -1,6 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:{{project_name.snakeCase()}}/features/counter/counter.dart';
-import 'package:riverpod_test/riverpod_test.dart';
+import 'package:example/features/counter/counter.dart';
 
 abstract class MyAbstract {}
 
@@ -12,54 +12,61 @@ class NOConstAbstract implements MyAbstract {}
 
 void main() {
   group('CounterNotifier', () {
-    testNotifier<CounterNotifier, int>(
-      'initial state is 0',
-      provider: counterPod,
-      expect: () => [0],
-      emitBuildStates: true,
-    );
-    testNotifier<CounterNotifier, int>(
-      'initial state is 1',
-      overrides: [intialCounterValuePod.overrideWithValue(1)],
-      provider: counterPod,
-      expect: () => [1],
-      emitBuildStates: true,
-    );
-    testNotifier<CounterNotifier, int>(
-      'emits [0] on start then [1] when increment is called',
-      provider: counterPod,
-      expect: () => [0, 1],
-      emitBuildStates: true,
-      act: (notifier) => notifier.increment(),
-    );
-    testNotifier<CounterNotifier, int>(
-      'emits [1] when increment is called',
-      provider: counterPod,
-      expect: () => [1],
-      act: (notifier) => notifier.increment(),
-    );
-    testNotifier<CounterNotifier, int>(
-      'emits [0] on start then [-1] when increment is called',
-      provider: counterPod,
-      expect: () => [0, -1],
-      emitBuildStates: true,
-      act: (notifier) => notifier.decrement(),
-    );
-    testNotifier<CounterNotifier, int>(
-      'emits [-1] when decrement is called',
-      provider: counterPod,
-      expect: () => [-1],
-      act: (notifier) => notifier.decrement(),
-    );
-    testNotifier<CounterNotifier, int>(
-      'expect [2] when increment is called twice',
-      provider: counterPod,
-      act: (notifier) => notifier
-        ..increment()
-        ..increment(),
-      skip: 1,
-      expect: () => [2],
-    );
+    test('initial state is 0', () {
+      final container = ProviderContainer.test();
+      expect(
+        container.read(counterPod),
+        0,
+      );
+    });
+    test('initial state is 1', () {
+      final container = ProviderContainer.test(overrides: [
+        counterPod.overrideWithBuild(
+          (ref, notifier) => 1,
+        )
+      ]);
+      expect(
+        container.read(counterPod),
+        1,
+      );
+    });
+    test('emits [0] on start then [1] when increment is called', () {
+      final container = ProviderContainer.test();
+      expect(
+        container.read(counterPod),
+        0,
+      );
+      container.read(counterPod.notifier).increment();
+      expect(
+        container.read(counterPod),
+        1,
+      );
+    });
+    test('emits [0] on start then [-1] when decrement is called', () {
+      final container = ProviderContainer.test();
+      expect(
+        container.read(counterPod),
+        0,
+      );
+      container.read(counterPod.notifier).decrement();
+      expect(
+        container.read(counterPod),
+        -1,
+      );
+    });
+    test('expect [2] when increment is called twice', () {
+      final container = ProviderContainer.test();
+      expect(
+        container.read(counterPod),
+        0,
+      );
+      container.read(counterPod.notifier).increment();
+      container.read(counterPod.notifier).increment();
+      expect(
+        container.read(counterPod),
+        2,
+      );
+    });
 
     test('with const', () {
       expect(

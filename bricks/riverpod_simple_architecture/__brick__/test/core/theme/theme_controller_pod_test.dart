@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage.dart';
-import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
-import 'package:{{project_name.snakeCase()}}/core/theme/theme_controller.dart';
-import 'package:riverpod_test/riverpod_test.dart';
+import 'package:example/core/local_storage/app_storage.dart';
+import 'package:example/core/local_storage/app_storage_pod.dart';
+import 'package:example/core/theme/theme_controller.dart';
 
 void main() {
   group('ThemeModeController Test', () {
@@ -14,76 +14,105 @@ void main() {
     tearDown(() async {
       await appStorage.clearAllData();
     });
-    testNotifier(
+    test(
       'expect ThemeMode.system on first time',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      emitBuildStates: true,
-      expect: () => [
-        ThemeMode.system,
-      ],
+      () {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.system,
+        );
+      },
     );
-    testNotifier(
+
+    test(
       'expect ThemeMode.light after change the theme to ThemeMode.light',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      emitBuildStates: true,
-      act: (notifier) async => await notifier.changeTheme(ThemeMode.light),
-      expect: () => [
-        ThemeMode.system,
-        ThemeMode.light,
-      ],
+      () async {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.system,
+        );
+        await container
+            .read(themecontrollerProvider.notifier)
+            .changeTheme(ThemeMode.light);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.light,
+        );
+      },
     );
-    testNotifier(
+
+    test(
       'expect ThemeMode.dark after change the theme to ThemeMode.light and then ThemeMode.dark',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      emitBuildStates: true,
-      act: (notifier) async {
-        await notifier.changeTheme(ThemeMode.light);
-        await notifier.changeTheme(ThemeMode.dark);
+      () async {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.system,
+        );
+        await container
+            .read(themecontrollerProvider.notifier)
+            .changeTheme(ThemeMode.light);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.light,
+        );
+        await container
+            .read(themecontrollerProvider.notifier)
+            .changeTheme(ThemeMode.dark);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.dark,
+        );
       },
-      expect: () => [
-        ThemeMode.system,
-        ThemeMode.light,
-        ThemeMode.dark,
-      ],
     );
-    testNotifier(
+
+    test(
       'check persistence ThemeMode.light',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      setUp: () async {
+      () async {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
         await appStorage.put(key: 'theme', value: ThemeMode.light.name);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.light,
+        );
       },
-      emitBuildStates: true,
-      expect: () => [
-        ThemeMode.light,
-      ],
     );
-    testNotifier(
+
+    test(
       'check persistence ThemeMode.dark',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      setUp: () async {
+      () async {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
         await appStorage.put(key: 'theme', value: ThemeMode.dark.name);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.dark,
+        );
       },
-      emitBuildStates: true,
-      expect: () => [
-        ThemeMode.dark,
-      ],
     );
-    testNotifier(
+    test(
       'check persistence ThemeMode.system',
-      provider: themecontrollerProvider,
-      overrides: [appStorageProvider.overrideWithValue(appStorage)],
-      setUp: () async {
+      () async {
+        final container = ProviderContainer.test(overrides: [
+          appStorageProvider.overrideWithValue(appStorage),
+        ]);
         await appStorage.put(key: 'theme', value: ThemeMode.system.name);
+        expect(
+          container.read(themecontrollerProvider),
+          ThemeMode.system,
+        );
       },
-      emitBuildStates: true,
-      expect: () => [
-        ThemeMode.system,
-      ],
     );
   });
 }
