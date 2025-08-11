@@ -1,3 +1,9 @@
+# 2.2.1
+
+### 🐛 Bug Fixes
+
+*   **test**: update import paths in tests to use the correct project name (`example` -> `{{project_name.snakeCase()}}`).
+
 # 2.2.0
 
 This release focuses on significant core refactoring, dependency cleanup, and code quality improvements for a more robust and maintainable foundation.
