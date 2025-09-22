@@ -1,10 +1,32 @@
+
+
+ ## [2.3.0] - 2024-05-24
+
+ ### Added
+ - `CHANGELOG.md` to track project changes.
+ - `TalkerRiverpodObserver` for improved state management logging and debugging.
+ - `riverpod_test` package for streamlined provider testing.
+ - Tests for `TalkerRiverpodObserver`.
+
+ ### Changed
+ - Downgraded `flutter_riverpod` to `^2.6.1`.
+ - Switched `responsive_framework` to a git dependency for the latest updates and fixes.
+
 # 2.2.1
+ # Changelog
 
 ### 🐛 Bug Fixes
+ All notable changes to this project will be documented in this file.
 
 *   **test**: update import paths in tests to use the correct project name (`example` -> `{{project_name.snakeCase()}}`).
+ ## [2.3.0] - 2024-05-24
 
 # 2.2.0
+ ### Added
+ - `CHANGELOG.md` to track project changes.
+ - `TalkerRiverpodObserver` for improved state management logging and debugging.
+ - `riverpod_test` package for streamlined provider testing.
+ - Tests for `TalkerRiverpodObserver`.
 
 This release focuses on significant core refactoring, dependency cleanup, and code quality improvements for a more robust and maintainable foundation.
 
@@ -316,3 +338,8 @@ Because riverpod_simple_architecture requires mason version >=0.1.0-dev.49 <0.1.
 
 # 0.1.0+1
 - initial release.
+ ### Changed
+ - Upgraded `flutter_riverpod` to `^2.6.1`.
+ - Switched `responsive_framework` to a git dependency for the latest updates and fixes.
+ - Refactored widget tests to improve reliability, remove unnecessary `runAsync` calls, and align with `riverpod_test` best practices.
+ - Improved asynchronous testing in `cache_extension_test.dart` for better accuracy.
