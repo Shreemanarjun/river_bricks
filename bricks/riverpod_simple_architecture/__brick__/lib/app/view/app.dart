@@ -34,7 +34,7 @@ class _AppState extends ConsumerState<App> with GlobalHelper {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       //TODO: change app name
-      title: '{{project_name.snakeCase()}} App',
+      title: 'example App',
       theme: Themes.theme,
       darkTheme: Themes.darkTheme,
       themeMode: currentTheme,

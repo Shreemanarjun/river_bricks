@@ -1,33 +1,8 @@
 import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer/riverpod_log.dart';
-import 'package:flutter_riverpod/experimental/mutation.dart';
+import 'package:{{project_name.snakeCase()}}/shared/riverpod_ext/riverpod_observer/talker_riverpod_settings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-
-// coverage:ignore-file
-class TalkerRiverpodLoggerSettings {
-  const TalkerRiverpodLoggerSettings({
-    this.enabled = true,
-    this.printProviderAdded = true,
-    this.printProviderUpdated = true,
-    this.printProviderDisposed = false,
-    this.printProviderFailed = true,
-    this.printStateFullData = true,
-    this.printFailFullData = true,
-    this.didFailFilter,
-    this.providerFilter,
-  });
-
-  final bool enabled;
-  final bool printProviderAdded;
-  final bool printProviderUpdated;
-  final bool printProviderDisposed;
-  final bool printProviderFailed;
-  final bool printStateFullData;
-  final bool printFailFullData;
-  final bool Function(Object error)? didFailFilter;
-  final bool Function(ProviderBase<Object?> provider)? providerFilter;
-}
 
 /// [Riverpod] logger on [Talker] base
 ///
@@ -40,53 +15,56 @@ class TalkerRiverpodObserver extends ProviderObserver {
     this.settings = const TalkerRiverpodLoggerSettings(),
   }) {
     _talker = talker ?? Talker();
+    _talker.settings.registerKeys([
+      TalkerKey.riverpodAdd,
+      TalkerKey.riverpodUpdate,
+      TalkerKey.riverpodDispose,
+      TalkerKey.riverpodFail,
+    ]);
   }
 
   late Talker _talker;
   final TalkerRiverpodLoggerSettings settings;
 
   @override
+  @mustCallSuper
   void didAddProvider(
-    ProviderObserverContext context,
+    ProviderBase<Object?> provider,
     Object? value,
+    ProviderContainer container,
   ) {
-    super.didAddProvider(
-      context,
-      value,
-    );
+    super.didAddProvider(provider, value, container);
     if (!settings.enabled || !settings.printProviderAdded) {
       return;
     }
-    final accepted = settings.providerFilter?.call(context.provider) ?? true;
+    final accepted = settings.providerFilter?.call(provider) ?? true;
     if (!accepted) {
       return;
     }
     _talker.logCustom(
-      RiverpodAddLog(
-        provider: context.provider,
-        value: value,
-        settings: settings,
-      ),
+      RiverpodAddLog(provider: provider, value: value, settings: settings),
     );
   }
 
   @override
+  @mustCallSuper
   void didUpdateProvider(
-    ProviderObserverContext context,
+    ProviderBase<Object?> provider,
     Object? previousValue,
     Object? newValue,
+    ProviderContainer container,
   ) {
-    super.didUpdateProvider(context, previousValue, newValue);
+    super.didUpdateProvider(provider, previousValue, newValue, container);
     if (!settings.enabled || !settings.printProviderUpdated) {
       return;
     }
-    final accepted = settings.providerFilter?.call(context.provider) ?? true;
+    final accepted = settings.providerFilter?.call(provider) ?? true;
     if (!accepted) {
       return;
     }
     _talker.logCustom(
       RiverpodUpdateLog(
-        provider: context.provider,
+        provider: provider,
         previousValue: previousValue,
         newValue: newValue,
         settings: settings,
@@ -95,36 +73,37 @@ class TalkerRiverpodObserver extends ProviderObserver {
   }
 
   @override
+  @mustCallSuper
   void didDisposeProvider(
-    ProviderObserverContext context,
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
   ) {
-    super.didDisposeProvider(context);
+    super.didDisposeProvider(provider, container);
     if (!settings.enabled || !settings.printProviderDisposed) {
       return;
     }
-    final accepted = settings.providerFilter?.call(context.provider) ?? true;
+    final accepted = settings.providerFilter?.call(provider) ?? true;
     if (!accepted) {
       return;
     }
     _talker.logCustom(
-      RiverpodDisposeLog(
-        provider: context.provider,
-        settings: settings,
-      ),
+      RiverpodDisposeLog(provider: provider, settings: settings),
     );
   }
 
   @override
+  @mustCallSuper
   void providerDidFail(
-    ProviderObserverContext context,
+    ProviderBase<Object?> provider,
     Object error,
     StackTrace stackTrace,
+    ProviderContainer container,
   ) {
-    super.providerDidFail(context, error, stackTrace);
+    super.providerDidFail(provider, error, stackTrace, container);
     if (!settings.enabled || !settings.printProviderFailed) {
       return;
     }
-    final accepted = settings.providerFilter?.call(context.provider) ?? true;
+    final accepted = settings.providerFilter?.call(provider) ?? true;
     if (!accepted) {
       return;
     }
@@ -140,65 +119,11 @@ class TalkerRiverpodObserver extends ProviderObserver {
 
     _talker.logCustom(
       RiverpodFailLog(
-        provider: context.provider,
+        provider: provider,
         providerError: error,
         providerStackTrace: stackTrace,
         settings: settings,
       ),
     );
-  }
-
-  @override
-  void mutationStart(
-      ProviderObserverContext context, Mutation<Object?> mutation) {
-    _talker.logCustom(
-      RiverpodMutationStart(
-        provider: context.provider,
-        value: context.container.read(context.provider),
-        settings: settings,
-      ),
-    );
-    super.mutationStart(context, mutation);
-  }
-
-  @override
-  void mutationSuccess(ProviderObserverContext context,
-      Mutation<Object?> mutation, Object? result) {
-    _talker.logCustom(
-      RiverpodMutationUpdate(
-        provider: context.provider,
-        previousValue: context.container.read(context.provider),
-        newValue: result,
-        settings: settings,
-      ),
-    );
-    super.mutationSuccess(context, mutation, result);
-  }
-
-  @override
-  void mutationError(ProviderObserverContext context,
-      Mutation<Object?> mutation, Object error, StackTrace stackTrace) {
-    _talker.logCustom(
-      RiverpodMutationError(
-        provider: context.provider,
-        providerError: error,
-        providerStackTrace: stackTrace,
-        settings: settings,
-      ),
-    );
-    super.mutationError(context, mutation, error, stackTrace);
-  }
-
-  @override
-  void mutationReset(
-      ProviderObserverContext context, Mutation<Object?> mutation) {
-    _talker.logCustom(
-      RiverpodMutationReset(
-        provider: context.provider,
-        value: context.container.read(context.provider),
-        settings: settings,
-      ),
-    );
-    super.mutationReset(context, mutation);
   }
 }

@@ -15,7 +15,8 @@ import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 import 'package:spot/spot.dart';
 import '../../helpers/pump_app.dart';
 
-class TestInternetStatusNotifier extends StreamNotifier<InternetStatus>
+class TestInternetStatusNotifier
+    extends AutoDisposeStreamNotifier<InternetStatus>
     implements InternetStatusNotifier {
   final Stream<InternetStatus> Function() streamBuild;
 
@@ -46,25 +47,19 @@ void main() {
       final ProviderContainer container = ProviderContainer(
         overrides: [
           appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
+          translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+          enableInternetCheckerPod.overrideWith((ref) => false),
           internetCheckerNotifierPod.overrideWith(
             () => TestInternetStatusNotifier(
               streamBuild: () {
                 return Stream.value(InternetStatus.connected);
               },
             ),
-          )
+          ),
         ],
       );
       await tester.pumpApp(
-        child: Scaffold(
-          body: const Text('I am the child').monitorConnection(),
-        ),
+        child: Scaffold(body: const Text('I am the child').monitorConnection()),
         container: container,
       );
       await tester.pumpAndSettle();
@@ -72,117 +67,105 @@ void main() {
       expect(find.text('No Internet Available'), findsNothing);
     });
     testWidgets(
-        'renders the no internet widget child when internet is not available ',
-        (tester) async {
-      final ProviderContainer container = ProviderContainer(
-        overrides: [
-          appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
-          internetCheckerNotifierPod.overrideWith(
-            () => TestInternetStatusNotifier(
-              streamBuild: () {
-                return Stream.value(InternetStatus.disconnected);
-              },
+      'renders the no internet widget child when internet is not available ',
+      (tester) async {
+        final ProviderContainer container = ProviderContainer(
+          overrides: [
+            appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+            enableInternetCheckerPod.overrideWith((ref) => false),
+            internetCheckerNotifierPod.overrideWith(
+              () => TestInternetStatusNotifier(
+                streamBuild: () {
+                  return Stream.value(InternetStatus.disconnected);
+                },
+              ),
             ),
-          )
-        ],
-      );
-      await tester.pumpApp(
-        child: Scaffold(
-          body: const Text('I am the child').monitorConnection(
-              noInternetWidget: const Text('I am no internet child')),
-        ),
-        container: container,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('I am the child'), findsOneWidget);
-      expect(find.text('I am no internet child'), findsOneWidget);
-    });
+          ],
+        );
+        await tester.pumpApp(
+          child: Scaffold(
+            body: const Text('I am the child').monitorConnection(
+              noInternetWidget: const Text('I am no internet child'),
+            ),
+          ),
+          container: container,
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('I am the child'), findsOneWidget);
+        expect(find.text('I am no internet child'), findsOneWidget);
+      },
+    );
     testWidgets(
-        'renders the child when internet available without maintaining state ',
-        (tester) async {
+      'renders the child when internet available without maintaining state ',
+      (tester) async {
+        final ProviderContainer providerContainer = ProviderContainer(
+          overrides: [
+            appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+            enableInternetCheckerPod.overrideWith((ref) => false),
+            internetCheckerNotifierPod.overrideWith(
+              () => TestInternetStatusNotifier(
+                streamBuild: () {
+                  return Stream.value(InternetStatus.connected);
+                },
+              ),
+            ),
+          ],
+        );
+        await tester.pumpApp(
+          child: Scaffold(
+            body: const Text('I am the child').monitorConnection(),
+          ),
+          container: providerContainer,
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('I am the child'), findsOneWidget);
+      },
+    );
+    testWidgets(
+      'renders the no internet widget child when internet is not available with no maintained state ',
+      (tester) async {
+        final ProviderContainer container = ProviderContainer(
+          overrides: [
+            appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+            enableInternetCheckerPod.overrideWith((ref) => false),
+            internetCheckerNotifierPod.overrideWith(
+              () => TestInternetStatusNotifier(
+                streamBuild: () {
+                  return Stream.value(InternetStatus.disconnected);
+                },
+              ),
+            ),
+          ],
+        );
+        await tester.pumpApp(
+          child: Scaffold(
+            body: const Text('I am the child').monitorConnection(
+              noInternetWidget: const Text('I am no internet child'),
+            ),
+          ),
+          container: container,
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('I am the child'), findsOneWidget);
+        expect(find.text('I am no internet child'), findsOneWidget);
+      },
+    );
+
+    testWidgets('renders child on web platform ', (tester) async {
       final ProviderContainer providerContainer = ProviderContainer(
         overrides: [
           appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
-          internetCheckerNotifierPod.overrideWith(
-            () => TestInternetStatusNotifier(
-              streamBuild: () {
-                return Stream.value(InternetStatus.connected);
-              },
-            ),
-          )
+          translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+          enableInternetCheckerPod.overrideWith((ref) => false),
         ],
       );
       await tester.pumpApp(
         child: Scaffold(
-          body: const Text('I am the child').monitorConnection(),
-        ),
-        container: providerContainer,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('I am the child'), findsOneWidget);
-    });
-    testWidgets(
-        'renders the no internet widget child when internet is not available with no maintained state ',
-        (tester) async {
-      final ProviderContainer container = ProviderContainer(
-        overrides: [
-          appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
-          internetCheckerNotifierPod.overrideWith(
-            () => TestInternetStatusNotifier(
-              streamBuild: () {
-                return Stream.value(InternetStatus.disconnected);
-              },
-            ),
-          )
-        ],
-      );
-      await tester.pumpApp(
-        child: Scaffold(
-          body: const Text('I am the child').monitorConnection(
-            noInternetWidget: const Text('I am no internet child'),
-          ),
-        ),
-        container: container,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('I am the child'), findsOneWidget);
-      expect(find.text('I am no internet child'), findsOneWidget);
-    });
-
-    testWidgets('renders child on web platform ', (tester) async {
-      final ProviderContainer providerContainer = ProviderContainer(overrides: [
-        appBoxProvider.overrideWithValue(appBox),
-        translationsPod.overrideWith(
-          (ref) => AppLocale.en.buildSync(),
-        ),
-        enableInternetCheckerPod.overrideWith(
-          (ref) => false,
-        ),
-      ]);
-      await tester.pumpApp(
-        child: Scaffold(
-          body: const Text(
-            'I am the child',
-            key: ValueKey('child'),
-          ).monitorConnection(
+          body: const Text('I am the child', key: ValueKey('child'))
+              .monitorConnection(
             noInternetWidget: const Text('I am no internet child'),
           ),
         ),
@@ -199,26 +182,20 @@ void main() {
       final ProviderContainer container = ProviderContainer(
         overrides: [
           appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
+          translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+          enableInternetCheckerPod.overrideWith((ref) => false),
           internetCheckerNotifierPod.overrideWith(
             () => TestInternetStatusNotifier(
               streamBuild: () async* {
                 yield InternetStatus.disconnected;
               },
             ),
-          )
+          ),
         ],
       );
       await tester.pumpApp(
         child: Scaffold(
-          body: const Text(
-            'I am the child',
-          ).monitorConnection(
+          body: const Text('I am the child').monitorConnection(
             noInternetWidget: const Text('I am no internet child'),
           ),
         ),
@@ -236,41 +213,34 @@ void main() {
 
       await tester.pumpAndSettle();
       await tester.pumpAndSettle();
-      await tester.runAsync(
-        () async {
-          expect(find.text('I am the child'), findsOneWidget);
-          expect(find.text('I am no internet child'), findsNothing);
-        },
-      );
+      await tester.runAsync(() async {
+        expect(find.text('I am the child'), findsOneWidget);
+        expect(find.text('I am no internet child'), findsNothing);
+      });
     });
 
-    testWidgets('check no internet pod refreshed on ok clicked on snackbar',
-        (tester) async {
+    testWidgets('check no internet pod refreshed on ok clicked on snackbar', (
+      tester,
+    ) async {
       final ProviderContainer container = ProviderContainer(
         overrides: [
           appBoxProvider.overrideWithValue(appBox),
-          translationsPod.overrideWith(
-            (ref) => AppLocale.en.buildSync(),
-          ),
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
+          translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+          enableInternetCheckerPod.overrideWith((ref) => false),
           internetCheckerNotifierPod.overrideWith(
             () => TestInternetStatusNotifier(
               streamBuild: () async* {
                 yield InternetStatus.disconnected;
               },
             ),
-          )
+          ),
         ],
       );
 
       await tester.pumpApp(
         child: Material(
           child: const Scaffold(
-            body: Text(
-              'I am the child',
-            ),
+            body: Text('I am the child'),
           ).monitorConnection(),
         ),
         container: container,
@@ -280,15 +250,18 @@ void main() {
 
       final childWidget = find.text('I am the child', skipOffstage: false);
       expect(childWidget, findsOneWidget);
-      final okButton =
-          find.byKey(const ValueKey('OK_BUTTON'), skipOffstage: false);
+      final okButton = find.byKey(
+        const ValueKey('OK_BUTTON'),
+        skipOffstage: false,
+      );
       await tester.ensureVisible(okButton);
       await tester.pumpAndSettle();
 
       await tester.tap(okButton);
       expect(container.read(internetCheckerNotifierPod).isRefreshing, isTrue);
       await tester.pumpAndSettle(
-          const Duration(milliseconds: 500)); // Add a slight delay
+        const Duration(milliseconds: 500),
+      ); // Add a slight delay
 
       container
           .read(internetCheckerNotifierPod.notifier)
@@ -309,20 +282,16 @@ void main() {
         addTearDown(() => controller.close());
 
         final container = ProviderContainer(
-          observers: [
-            TalkerRiverpodObserver(),
-          ],
+          observers: [TalkerRiverpodObserver()],
           overrides: [
             appBoxProvider.overrideWithValue(appBox),
-            translationsPod.overrideWith(
-              (ref) => AppLocale.en.buildSync(),
+            translationsPod.overrideWith((ref) => AppLocale.en.buildSync()),
+            enableInternetCheckerPod.overrideWith((ref) => false),
+            internetCheckerNotifierPod.overrideWith(
+              () => TestInternetStatusNotifier(
+                streamBuild: () => controller.stream,
+              ),
             ),
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
-            internetCheckerNotifierPod.overrideWithBuild(
-              (ref, notifier) => controller.stream,
-            )
           ],
         );
         addTearDown(() => container.dispose());
@@ -333,9 +302,7 @@ void main() {
             child: MaterialApp(
               home: Material(
                 child: const Scaffold(
-                  body: Text(
-                    'I am the child',
-                  ),
+                  body: Text('I am the child'),
                 ).monitorConnection(),
               ),
             ),

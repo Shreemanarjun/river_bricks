@@ -14,15 +14,12 @@ extension PumpApp on WidgetTester {
     ProviderContainer? container,
   }) async {
     await loadAppFonts();
-    final newContainer = container ?? ProviderContainer.test();
+    final newContainer = container ?? ProviderContainer();
     addTearDown(newContainer.dispose);
     return await pumpWidget(
       UncontrolledProviderScope(
         container: newContainer,
-        child: FakeApp(
-          widget: child,
-          providerContainer: container,
-        ),
+        child: FakeApp(widget: child, providerContainer: container),
       ),
     );
   }
@@ -31,11 +28,7 @@ extension PumpApp on WidgetTester {
 class FakeApp extends ConsumerWidget {
   final ProviderContainer? providerContainer;
   final Widget widget;
-  const FakeApp({
-    super.key,
-    required this.widget,
-    this.providerContainer,
-  });
+  const FakeApp({super.key, required this.widget, this.providerContainer});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

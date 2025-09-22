@@ -7,12 +7,15 @@ import 'package:{{project_name.snakeCase()}}/features/theme_segmented_btn/view/t
 import 'package:{{project_name.snakeCase()}}/shared/widget/app_locale_popup.dart';
 import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
-@RoutePage(
-  deferredLoading: true,
-)
-class CounterPage extends StatelessWidget {
+@RoutePage(deferredLoading: true)
+class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
 
+  @override
+  State<CounterPage> createState() => _CounterPageState();
+}
+
+class _CounterPageState extends State<CounterPage> {
   @override
   Widget build(BuildContext context) {
     return const CounterView();
@@ -27,18 +30,13 @@ class CounterView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const CounterAppBarTitle(),
-        actions: const [
-          AppLocalePopUp(),
-        ],
+        actions: const [AppLocalePopUp()],
       ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CounterText(),
-            ThemeSegmentedBtn(),
-          ],
+          children: [CounterText(), ThemeSegmentedBtn()],
         ),
       ),
       floatingActionButton: Column(

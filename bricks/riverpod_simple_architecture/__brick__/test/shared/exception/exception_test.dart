@@ -113,6 +113,15 @@ void main() {
       expect(exception1, equals(exception2));
     });
 
+    test('equality check should return true for identical instances', () {
+      final exception = APIException(
+        statusCode: 404,
+        statusMessage: 'Not Found',
+        errorMessage: 'Resource not found',
+      );
+      expect(exception == exception, isTrue);
+    });
+
     test('hashCode should be calculated correctly for APIException objects',
         () {
       final exception = APIException(

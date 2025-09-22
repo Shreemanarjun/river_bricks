@@ -24,20 +24,15 @@ Future<void> main() async {
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
       final language = await AppLocale.en.build();
-      await tester.pumpApp(
-        child: const CounterPage(),
-        container: ProviderContainer.test(
-          overrides: [
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
-            appBoxProvider.overrideWithValue(appBox),
-            translationsPod.overrideWith(
-              (ref) => language,
-            )
-          ],
-        ),
+      final container = ProviderContainer(
+        overrides: [
+          enableInternetCheckerPod.overrideWith((ref) => false),
+          appBoxProvider.overrideWithValue(appBox),
+          translationsPod.overrideWith((ref) => language),
+        ],
       );
+      addTearDown(container.dispose);
+      await tester.pumpApp(child: const CounterPage(), container: container);
       expect(find.byType(CounterPage), findsOneWidget);
     });
   });

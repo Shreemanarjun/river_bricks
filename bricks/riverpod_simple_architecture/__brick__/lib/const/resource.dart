@@ -4,6 +4,6 @@
 class R {
   const R._();
 
-  /// ![preview](file://C:\Users\shree\Documents\GitHub\{{project_name.snakeCase()}}\assets\anim\nointernet.riv)
+  /// ![preview](file://C:\Users\shree\Documents\GitHub\example\assets\anim\nointernet.riv)
   static const String ASSETS_ANIM_NOINTERNET_RIV = 'assets/anim/nointernet.riv';
 }

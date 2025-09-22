@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage.dart';
 import 'package:{{project_name.snakeCase()}}/core/local_storage/app_storage_pod.dart';
@@ -14,111 +13,53 @@ Object? errorOf(void Function() cb) {
 }
 
 Future<void> main() async {
-  group(
-    'App Storage Test',
-    () {
-      AppStorage appStorage = AppStorage(null);
-      setUp(() async {
-        await appStorage.init(isTest: true);
-      });
+  group('App Storage Test', () {
+    AppStorage appStorage = AppStorage(null);
+    setUp(() async {
+      await appStorage.init(isTest: true);
+    });
 
-      test(
-        'throw exception without intialization',
-        () {
-          final container = ProviderContainer.test();
-          final exception = errorOf(
-            () => container.read(appStorageProvider),
-          );
-          expect(
-            exception,
-            isA<ProviderException>().having(
-              (s) => s.exception,
-              'exception',
-              isA<ProviderException>().having(
-                (s) => s.exception,
-                'exception',
-                isA<UnimplementedError>().having(
-                  (s) => s.message,
-                  'error message',
-                  equals('appBoxProvider is not overriden'),
-                ),
-              ),
-            ),
-          );
-        },
+    test('throw exception without intialization', () {
+      final container = ProviderContainer();
+      final exception = errorOf(() => container.read(appStorageProvider));
+      expect(
+        exception,
+        isA<UnimplementedError>().having(
+          (s) => s.message,
+          'exception',
+          equals('appBoxProvider is not overriden'),
+        ),
       );
-      test(
-        'intiailize and check box have no data',
-        () {
-          final container = ProviderContainer.test(
-            overrides: [
-              appStorageProvider.overrideWithValue(appStorage),
-            ],
-          );
-          final storage = container.read(appStorageProvider);
-          expect(
-            storage.appBox?.values.isEmpty,
-            true,
-          );
-          expect(
-            storage.appBox?.toMap(),
-            equals({}),
-          );
-        },
+    });
+    test('intiailize and check box have no data', () {
+      final container = ProviderContainer(
+        overrides: [appStorageProvider.overrideWithValue(appStorage)],
       );
-      test(
-        'store a value and check not null in the box',
-        () async {
-          final container = ProviderContainer.test(
-            overrides: [
-              appStorageProvider.overrideWithValue(appStorage),
-            ],
-          );
-          final storage = container.read(appStorageProvider);
-          await storage.put(key: 'hello', value: 'world');
-          expect(
-            storage.appBox?.values.isEmpty,
-            false,
-          );
-          expect(
-            storage.appBox?.toMap(),
-            equals({'hello': 'world'}),
-          );
-          expect(
-            storage.get(key: 'hello'),
-            isNotNull,
-          );
-          expect(
-            storage.get(key: 'hello'),
-            equals('world'),
-          );
-        },
+      final storage = container.read(appStorageProvider);
+      expect(storage.appBox?.values.isEmpty, true);
+      expect(storage.appBox?.toMap(), equals({}));
+    });
+    test('store a value and check not null in the box', () async {
+      final container = ProviderContainer(
+        overrides: [appStorageProvider.overrideWithValue(appStorage)],
       );
-      test(
-        'check cleardata and box should be null',
-        () async {
-          final container = ProviderContainer.test(
-            overrides: [
-              appStorageProvider.overrideWithValue(appStorage),
-            ],
-          );
-          final storage = container.read(appStorageProvider);
-          await storage.put(key: 'hello', value: 'world');
-          await storage.clearAllData();
-          expect(
-            storage.appBox?.values.isEmpty,
-            true,
-          );
-          expect(
-            storage.appBox?.toMap(),
-            equals({}),
-          );
-          expect(
-            storage.get(key: 'hello'),
-            isNull,
-          );
-        },
+      final storage = container.read(appStorageProvider);
+      await storage.put(key: 'hello', value: 'world');
+      expect(storage.appBox?.values.isEmpty, false);
+      expect(storage.appBox?.toMap(), equals({'hello': 'world'}));
+      expect(storage.get(key: 'hello'), isNotNull);
+      expect(storage.get(key: 'hello'), equals('world'));
+    });
+    test('check cleardata and box should be null', () async {
+      final container = ProviderContainer(
+        overrides: [appStorageProvider.overrideWithValue(appStorage)],
       );
-    },
-  );
+      final storage = container.read(appStorageProvider);
+      await storage.put(key: 'hello', value: 'world');
+      await storage.clearAllData();
+      expect(storage.appBox?.values.isEmpty, true);
+      expect(storage.appBox?.toMap(), equals({}));
+      expect(storage.get(key: 'hello'), isNull);
+    });
+  });
 }

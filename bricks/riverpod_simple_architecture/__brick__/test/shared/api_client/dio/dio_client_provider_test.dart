@@ -9,42 +9,34 @@ import 'package:{{project_name.snakeCase()}}/shared/api_client/dio/form_data_int
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 void main() {
-  group(
-    "dio Client Provider",
-    () {
-      test(
-        'expect dio.baseUrl should be "https://randomuser.me/api/"',
-        () {
-          final container = ProviderContainer.test();
-          final dio = container.read(dioProvider);
-          expect(
-            dio,
-            isA<DioForNative>()
-                .having(
-                  (d) => d.options.baseUrl,
-                  'default interceptor should be 2',
-                  equals("https://randomuser.me/api/"),
-                )
-                .having(
-                  (d) => d.interceptors.length,
-                  "Interceptors should be 5",
-                  equals(5),
-                )
-                .having(
-                  (d) => d.interceptors,
-                  "Contains a time response interceptor",
-                  containsAll(
-                    [
-                      isA<TimeResponseInterceptor>(),
-                      isA<FormDataInterceptor>(),
-                      isA<TalkerDioLogger>(),
-                      isA<DefaultAPIInterceptor>(),
-                    ],
-                  ),
-                ),
-          );
-        },
+  group("dio Client Provider", () {
+    test('expect dio.baseUrl should be "https://randomuser.me/api/"', () {
+      final container = ProviderContainer();
+      final dio = container.read(dioProvider);
+      expect(
+        dio,
+        isA<DioForNative>()
+            .having(
+              (d) => d.options.baseUrl,
+              'default interceptor should be 2',
+              equals("https://randomuser.me/api/"),
+            )
+            .having(
+              (d) => d.interceptors.length,
+              "Interceptors should be 5",
+              equals(5),
+            )
+            .having(
+              (d) => d.interceptors,
+              "Contains a time response interceptor",
+              containsAll([
+                isA<TimeResponseInterceptor>(),
+                isA<FormDataInterceptor>(),
+                isA<TalkerDioLogger>(),
+                isA<DefaultAPIInterceptor>(),
+              ]),
+            ),
       );
-    },
-  );
+    });
+  });
 }

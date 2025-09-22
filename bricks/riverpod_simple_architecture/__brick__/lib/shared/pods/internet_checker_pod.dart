@@ -22,7 +22,7 @@ final internetConnectionCheckerInstancePod =
 });
 
 ///This stream notifier class handles internet connection status, and changes status if needed
-class InternetStatusNotifier extends StreamNotifier<InternetStatus> {
+class InternetStatusNotifier extends AutoDisposeStreamNotifier<InternetStatus> {
   @override
   Stream<InternetStatus> build() async* {
     final enabled = ref.watch(enableInternetCheckerPod);

@@ -17,6 +17,7 @@ import 'package:{{project_name.snakeCase()}}/shared/pods/internet_checker_pod.da
 import 'package:{{project_name.snakeCase()}}/shared/pods/translation_pod.dart';
 
 import '../../../helpers/helpers.dart';
+import '../pod/counter_pod_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -31,18 +32,48 @@ void main() {
     });
     testWidgets('renders CounterView', (tester) async {
       final translation = AppLocale.en.buildSync();
+      final counterPage = const CounterPage(key: ValueKey("counterPage"));
       await tester.pumpApp(
-        child: const CounterPage(),
-        container: ProviderContainer.test(
+        child: counterPage,
+        container: ProviderContainer(
           overrides: [
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
+            enableInternetCheckerPod.overrideWith((ref) => false),
             appBoxProvider.overrideWithValue(appBox),
-            translationsPod.overrideWith((ref) => translation)
+            translationsPod.overrideWith((ref) => translation),
           ],
         ),
       );
+      expect(counterPage.key, equals(ValueKey("counterPage")));
+      expect(
+        counterPage,
+        isNot(const CounterPage(key: ValueKey("counterPages"))),
+      );
+      expect(find.byKey(const ValueKey('counterPage')), findsOneWidget);
+
+      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(CounterView), findsOneWidget);
+    });
+
+    testWidgets('CounterPage constructor', (tester) async {
+      const CounterPage();
+    });
+
+    testWidgets('contains Scaffold with CounterAppBar and CounterView', (
+      tester,
+    ) async {
+      final translation = AppLocale.en.buildSync();
+      await tester.pumpApp(
+        child: const CounterPage(),
+        container: ProviderContainer(
+          overrides: [
+            enableInternetCheckerPod.overrideWith((ref) => false),
+            appBoxProvider.overrideWithValue(appBox),
+            translationsPod.overrideWith((ref) => translation),
+          ],
+        ),
+      );
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(CounterAppBarTitle), findsOneWidget);
       expect(find.byType(CounterView), findsOneWidget);
     });
   });
@@ -58,45 +89,39 @@ void main() {
     testWidgets('renders current count', (tester) async {
       const state = 42;
       final translation = AppLocale.en.buildSync();
-      final container = ProviderContainer.test(
+      final container = ProviderContainer(
         overrides: [
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
+          enableInternetCheckerPod.overrideWith((ref) => false),
           appBoxProvider.overrideWithValue(appBox),
-          counterPod.overrideWithBuild(
-            (ref, notifier) => state,
+          counterPod.overrideWith(
+            () => InitialCounterNotifier(initialValue: state),
           ),
-          translationsPod.overrideWith((ref) => translation)
+          translationsPod.overrideWith((ref) => translation),
         ],
         observers: [TalkerRiverpodObserver()],
       );
       addTearDown(container.dispose);
-      await tester.pumpApp(
-        child: const CounterView(),
-        container: container,
-      );
+      await tester.pumpApp(child: const CounterView(), container: container);
       await tester.pumpAndSettle();
 
       expect(find.text('$state'), findsOneWidget);
     });
 
-    testWidgets('calls increment when increment button is tapped',
-        (tester) async {
+    testWidgets('calls increment when increment button is tapped', (
+      tester,
+    ) async {
       const state = 42;
       final translation = AppLocale.en.buildSync();
       await tester.pumpApp(
         child: const CounterView(),
-        container: ProviderContainer.test(
+        container: ProviderContainer(
           overrides: [
-            enableInternetCheckerPod.overrideWith(
-              (ref) => false,
-            ),
+            enableInternetCheckerPod.overrideWith((ref) => false),
             appBoxProvider.overrideWithValue(appBox),
-            counterPod.overrideWithBuild(
-              (ref, notifier) => state,
+            counterPod.overrideWith(
+              () => InitialCounterNotifier(initialValue: state),
             ),
-            translationsPod.overrideWith((ref) => translation)
+            translationsPod.overrideWith((ref) => translation),
           ],
         ),
       );
@@ -107,37 +132,54 @@ void main() {
       expect(find.text('43'), findsOneWidget);
     });
 
-    testWidgets('calls decrement when decrement button is tapped',
-        (tester) async {
+    testWidgets('calls decrement when decrement button is tapped', (
+      tester,
+    ) async {
       const state = 42;
       final translation = AppLocale.en.buildSync();
-      final container = ProviderContainer.test(
+      final container = ProviderContainer(
         overrides: [
-          enableInternetCheckerPod.overrideWith(
-            (ref) => false,
-          ),
+          enableInternetCheckerPod.overrideWith((ref) => false),
           appBoxProvider.overrideWithValue(appBox),
-          counterPod.overrideWithBuild(
-            (ref, notifier) => state,
+          counterPod.overrideWith(
+            () => InitialCounterNotifier(initialValue: state),
           ),
-          translationsPod.overrideWith((ref) => translation)
+          translationsPod.overrideWith((ref) => translation),
         ],
       );
 
-      await tester.pumpApp(
-        child: const CounterView(),
-        container: container,
-      );
+      await tester.pumpApp(child: const CounterView(), container: container);
 
-      await tester.runAsync(
-        () async {
-          await tester.pumpAndSettle();
-          await tester.tap(find.byIcon(Icons.remove));
-          await tester.pumpAndSettle();
-          expect(find.text('42'), findsNothing);
-          expect(find.text('41'), findsOneWidget);
-        },
+      await tester.runAsync(() async {
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(Icons.remove));
+        await tester.pumpAndSettle();
+        expect(find.text('42'), findsNothing);
+        expect(find.text('41'), findsOneWidget);
+      });
+    });
+  });
+
+  group('CounterAppBarTitle', () {
+    late Box appBox;
+    setUp(() async {
+      appBox = await Hive.openBox('appBox', bytes: Uint8List(0));
+    });
+    tearDown(() {
+      appBox.clear();
+    });
+    testWidgets('renders the correct title', (tester) async {
+      final translation = AppLocale.en.buildSync();
+      await tester.pumpApp(
+        container: ProviderContainer(
+          overrides: [
+            translationsPod.overrideWith((ref) => translation),
+            appBoxProvider.overrideWithValue(appBox),
+          ],
+        ),
+        child: Material(child: const CounterAppBarTitle()),
       );
+      expect(find.text(translation.counterAppBarTitle), findsOneWidget);
     });
   });
 }
