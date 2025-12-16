@@ -9,11 +9,10 @@ repository: https://github.com/Shreemanarjun/river_bricks
 # A version number is three numbers separated by dots, like 1.2.34
 # followed by an optional build number (separated by a +).
 version: 2.3.0
-
 # The following defines the environment for the current brick.
 # It includes the version of mason that the brick requires.
-environment:
-  mason: ">=0.1.0-dev.49 <0.1.2"
+# environment:
+#   mason: ">=0.1.0-dev.49 <0.1.2"
 
 # Variables specify dynamic values that your brick depends on.
 # Zero or more variables can be specified for a given brick.
