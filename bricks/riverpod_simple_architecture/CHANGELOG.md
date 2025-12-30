@@ -1,5 +1,11 @@
 
 
+## [2.3.2] - 2025-12-30
+
+### Fixed
+- Dev dependency installation issues.
+- mason versiopn constraint removed.
+
  ## [2.3.0] - 2024-05-24
 
  ### Added
