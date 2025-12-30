@@ -73,14 +73,12 @@ void run(HookContext context) async {
 
   /// Run `Add dev dependencies` after generation.
   final devdeps = <String>[
-    "auto_route_generator",
-    "build_runner",
-    "custom_lint",
+    "auto_route_generator:  ^10.2.4",
+    "build_runner: ^2.5.4",
+    "custom_lint: ^0.8.0",
     "flutter_lints",
-    "mocktail",
-    "riverpod_lint",
-    "riverpod_test",
-    "slang_build_runner",
+    "mocktail: ^1.0.4",
+    "slang_build_runner: ^4.11.0",
     "spot",
     "very_good_analysis",
   ];
