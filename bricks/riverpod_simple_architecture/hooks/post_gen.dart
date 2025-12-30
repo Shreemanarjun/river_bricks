@@ -50,7 +50,7 @@ void run(HookContext context) async {
   ];
   try {
     final result = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'add', ...deps],
       runInShell: true,
     );
@@ -86,7 +86,7 @@ void run(HookContext context) async {
   ];
   try {
     final result = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'add', '--dev', ...devdeps],
       runInShell: true,
     );
@@ -131,15 +131,15 @@ void run(HookContext context) async {
 
   /// Run `flutter pub get` after generation.
   final additionalpackageprogress =
-      context.logger.progress('Installing dart packages');
+      context.logger.progress('Installing flutter packages');
   try {
     final result = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'get'],
       runInShell: true,
     );
     if (result.exitCode == 0) {
-      additionalpackageprogress.complete("Got dart packages");
+      additionalpackageprogress.complete("Got flutter packages");
     } else {
       additionalpackageprogress
           .update("Failed to get packages with exit code: ${result.exitCode}");
@@ -158,7 +158,7 @@ void run(HookContext context) async {
       context.logger.progress('Removing conflicting packages');
   try {
     final result = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'remove', 'flutter_gen'],
       runInShell: true,
     );
@@ -207,7 +207,7 @@ void run(HookContext context) async {
       context.logger.progress('Checking updation of pubspec');
   try {
     final result = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'get'],
       runInShell: true,
     );
